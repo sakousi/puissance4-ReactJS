@@ -8,13 +8,10 @@ const { Server } = require("socket.io");
 const cors = require("cors");
 const { ApolloServer } = require("apollo-server-express");
 const { applyMiddleware } = require("graphql-middleware");
-// const { updateUser } = require("./graphql/User/mutations");
 connectDB();
-// updateUser();
 
 app.use(cors());
 
-const httpServer = http.createServer(app);
 // const server = new ApolloServer({ schema });
 // await server.start();
 // server.applyMiddleware({ app });
@@ -29,13 +26,17 @@ app.use(
   "/graphql",
   graphqlHTTP({
     schema: applyMiddleware(schema),
-    graphiql: true,
+    // graphiql: true,
   })
 );
 
+const httpServer = http.createServer(app);
+
+startApolloServer();
+
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "http://localhost:3100",
     methods: ["GET", "POST"],
   },
 });
@@ -52,6 +53,7 @@ io.on("connection", (socket) => {
   });
 });
 
-httpServer.listen(3001, () => {
-  console.log("SERVER IS RUNNING");
+httpServer.listen(3101, () => {
+  console.log(`Listening on http://localhost:3101/`);
+
 });

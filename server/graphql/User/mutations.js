@@ -1,4 +1,4 @@
-const User = require("../../models");
+const User = require("../../models/User");
 const UserInputType = require("./inputTypes");
 const { GraphQLNonNull, GraphQLString } = require("graphql");
 
@@ -15,8 +15,10 @@ const updateUser = {
     const user = new User({
       ...args?.input,
     });
-    const result = await User.updateOne({ _id: user._id }, { $set: user });
-    return result;
+    // console.log(user);
+    // const result = await User.updateOne({ _id: user._id }, { $set: user });
+    const result = await user.save();
+    return result.ok;
   },
 };
 

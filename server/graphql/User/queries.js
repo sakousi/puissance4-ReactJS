@@ -2,7 +2,7 @@ const User = require("../../models");
 const UserType = require("./types");
 const {GraphQLID, GraphQLNonNull} = require("graphql");
 
-const user = {
+const getUserById = {
   type: UserType,
   description: "Get a single user",
   args: {
@@ -11,8 +11,9 @@ const user = {
     },
   },
   resolve: async (parent, args) => {
+    console.log('grgrgrg');
     return await User.findById(args.id);
   },
 };
 
-module.exports = { user };
+module.exports = { getUserById };
