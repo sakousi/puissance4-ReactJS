@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import { ApolloClient, InMemoryCache, gql, ApolloProvider } from "@apollo/client";
+import { AppProvider } from "./context/appContext";
 
 // http://localhost:3000
 // mongodb://admin:password@localhost:27017
@@ -15,7 +16,7 @@ const client = new ApolloClient({
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <ApolloProvider client={client}>
-    <App />
+    <AppProvider />
   </ApolloProvider>
 );
 

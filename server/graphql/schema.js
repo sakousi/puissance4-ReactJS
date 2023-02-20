@@ -2,7 +2,7 @@
 const { GraphQLSchema, GraphQLObjectType } = require("graphql");
 
 // Import the queries
-const { getUserById } = require("./User/queries");
+const { getUserById, getUserByEmail, getAllUsers } = require("./User/queries");
 
 // Import the mutations
 const { updateUser } = require("./User/mutations");
@@ -13,6 +13,8 @@ const QueryType = new GraphQLObjectType({
   description: "Root query type",
   fields: {
     getUserById,
+    getUserByEmail,
+    getAllUsers,
   },
 });
 
