@@ -29,6 +29,16 @@ export const GET_USER_BY_EMAIL = gql`
   }
 `;
 
+export const GET_USER_BY_ID = gql`
+  query GetUserById($id: ID!) {
+    getUserById(id: $id) {
+      id
+      username
+      email
+      password
+    }
+  }
+`;
 
 export const GET_ALL_USERS = gql`
   query GetAllUsers {
@@ -38,5 +48,11 @@ export const GET_ALL_USERS = gql`
       email
       password
     }
+  }
+`;
+
+export const CHECK_LOGIN = gql`
+  query CheckLogin($email: String!, $password: String!) {
+    checkLogin(email: $email, password: $password)
   }
 `;

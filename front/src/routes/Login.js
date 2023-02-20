@@ -1,27 +1,35 @@
-import { useQuery, useLazyQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { GET_USER_BY_EMAIL, GET_ALL_USERS } from "../API/userRequest";
+import { CHECK_LOGIN } from "../API/userRequest";
 import { AppContext } from "../context/appContext";
 
 export default function Login() {
   const appContext = useContext(AppContext);
   const navigate = useNavigate();
-
   const [email, setEmail] = useState("");
-  //   const getUserByEmail = useState(null)
-  const [getUserByEmail] = useLazyQuery(GET_USER_BY_EMAIL);
-  const [getAllUsers] = useLazyQuery(GET_ALL_USERS);
+  const [password, setPassword] = useState("");
+
+  const [checkLogin, { data: login }] = useLazyQuery(CHECK_LOGIN, {
+    onCompleted: (login) => {
+      if (login.checkLogin === true) {
+        appContext.setUser({ loggedIn: true });
+        console.log("loggedIn", true);
+        navigate("/");
+      }
+    },
+  });
+
   return (
     <section className="flex justify-center items-center flex-col h-screen bg-black">
       <h1 className="text-white text-4xl m-8">Login</h1>
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          getAllUsers();
-          getUserByEmail({
+          checkLogin({
             variables: {
               email: email,
+              password: password,
             },
           });
         }}
@@ -49,6 +57,8 @@ export default function Login() {
             id="password"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="•••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             required
           ></input>
         </div>

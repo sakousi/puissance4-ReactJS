@@ -2,7 +2,12 @@
 const { GraphQLSchema, GraphQLObjectType } = require("graphql");
 
 // Import the queries
-const { getUserById, getUserByEmail, getAllUsers } = require("./User/queries");
+const {
+  getUserById,
+  getUserByEmail,
+  getAllUsers,
+  checkLogin,
+} = require("./User/queries");
 
 // Import the mutations
 const { updateUser } = require("./User/mutations");
@@ -15,6 +20,7 @@ const QueryType = new GraphQLObjectType({
     getUserById,
     getUserByEmail,
     getAllUsers,
+    checkLogin,
   },
 });
 

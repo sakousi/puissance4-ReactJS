@@ -1,6 +1,6 @@
 const User = require("../../models/User");
 const UserType = require("./types");
-const { GraphQLID, GraphQLNonNull, GraphQLString } = require("graphql");
+const { GraphQLID, GraphQLNonNull, GraphQLString, GraphQLList, GraphQLBoolean } = require("graphql");
 
 const getUserById = {
   type: UserType,
@@ -11,26 +11,15 @@ const getUserById = {
     },
   },
   resolve: async (parent, args) => {
-    console.log("grgrgrg");
     return await User.find({ id: args.id });
   },
 };
 
 const getAllUsers = {
-  type: UserType,
+  type: new GraphQLList(UserType),
   description: "Get all users",
-  resolve: async () => {
-    const users = await User.find({});
-    console.log(users);
-    return users;
-    return users.map((user) => {
-      return {
-        id: user._id,
-        username: user.username,
-        email: user.email,
-        password: user.password,
-      };
-    });
+  async resolve() {
+    return await User.find({});
   },
 };
 
@@ -43,19 +32,32 @@ const getUserByEmail = {
     },
   },
   async resolve(parent, args) {
-    console.log(args.email);
-    const user = await User.find({ email: args.email });
-    console.log(user);
-    // return await User.find({ email: args.email });
-    return user.map((user) => {
-      return {
-        id: user._id,
-        username: user.username,
-        email: user.email,
-        password: user.password,
-      };
-    });
+    return await User.findOne({ email: args.email });
   },
 };
 
-module.exports = { getUserById, getUserByEmail, getAllUsers };
+const checkLogin = {
+  type: GraphQLBoolean,
+  description: "Check login",
+  args: {
+    email: {
+      type: new GraphQLNonNull(GraphQLString),
+    },
+    password: {
+      type: new GraphQLNonNull(GraphQLString),
+    },
+  },
+  async resolve(parent, args) {
+    const user = await User.findOne({ email: args.email });
+    if (!user) {
+      throw new Error("User not found");
+    }
+    const isMatch = user.password === args.password;
+    if (!isMatch) {
+      throw new Error("Password is incorrect");
+    }
+    return true;
+  },
+};
+
+module.exports = { getUserById, getUserByEmail, getAllUsers, checkLogin };

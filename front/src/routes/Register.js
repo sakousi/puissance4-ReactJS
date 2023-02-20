@@ -1,12 +1,10 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AppContext } from "../context/appContext";
 import { Link } from "react-router-dom";
 import { UPDATE_USER } from "../API/userRequest";
 import { useMutation } from "@apollo/client";
 
 export default function Register() {
-  //   const appContext = useContext(AppContext);
   const navigate = useNavigate();
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
@@ -85,12 +83,7 @@ export default function Register() {
           </div>
           <label className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
             I agree with the{" "}
-            <a
-              href="#"
-              className="text-blue-600 hover:underline dark:text-blue-500"
-            >
-              terms and conditions
-            </a>
+            <Link className="text-blue-600 hover:underline dark:text-blue-500" to={"/register"}>terms and conditions</Link>
             .
           </label>
         </div>
