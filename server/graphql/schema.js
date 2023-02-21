@@ -7,6 +7,7 @@ const {
   getUserByEmail,
   getAllUsers,
   checkLogin,
+  logout,
 } = require("./User/queries");
 
 // Import the mutations
@@ -21,6 +22,7 @@ const QueryType = new GraphQLObjectType({
     getUserByEmail,
     getAllUsers,
     checkLogin,
+    logout,
   },
 });
 

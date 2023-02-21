@@ -8,15 +8,30 @@ const { Server } = require("socket.io");
 const cors = require("cors");
 const { ApolloServer } = require("apollo-server-express");
 const { applyMiddleware } = require("graphql-middleware");
+const cookieParser = require("cookie-parser");
+const bodyParser = require('body-parser')
+const jwt = require("jsonwebtoken");
 connectDB();
-
+app.use(cookieParser());
 app.use(cors());
 
-async function startApolloServer() {
-  const server = new ApolloServer({ schema });
-  await server.start();
-  server.applyMiddleware({ app });
-}
+app.use(
+  bodyParser.json({
+    limit: '50mb',
+    extended: true,
+  })
+);
+app.use(
+  bodyParser.urlencoded({
+    limit: '50mb',
+    extended: true,
+  })
+);
+
+app.get("/", (req, res) => {
+  console.log(req.cookies);
+  console.log('Signed Cookies: ', req.signedCookies)
+});
 
 app.use(
   "/graphql",
@@ -27,6 +42,12 @@ app.use(
 );
 
 const httpServer = http.createServer(app);
+
+async function startApolloServer() {
+  const server = new ApolloServer({ schema });
+  await server.start();
+  server.applyMiddleware({ app });
+}
 
 startApolloServer();
 
@@ -51,5 +72,4 @@ io.on("connection", (socket) => {
 
 httpServer.listen(3101, () => {
   console.log(`Listening on http://localhost:3101/`);
-
 });

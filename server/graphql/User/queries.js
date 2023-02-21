@@ -47,7 +47,7 @@ const checkLogin = {
       type: new GraphQLNonNull(GraphQLString),
     },
   },
-  async resolve(parent, args) {
+  async resolve(parent, args, { res}) {
     const user = await User.findOne({ email: args.email });
     if (!user) {
       throw new Error("User not found");
@@ -56,8 +56,25 @@ const checkLogin = {
     if (!isMatch) {
       throw new Error("Password is incorrect");
     }
+
+    res.cookie('sessionID', user.id, {
+      httpOnly: true, // Cookie cannot be accessed by client-side scripts
+      maxAge: 24 * 60 * 60 * 1000, // Cookie will expire in 24 hours
+      // signed: true, // Cookie will be signed
+      
+    });
+
     return true;
   },
 };
 
-module.exports = { getUserById, getUserByEmail, getAllUsers, checkLogin };
+const logout = {
+  type: GraphQLBoolean,
+  description: "Logout",
+  async resolve(parent, args, { res }) {
+    res.clearCookie('sessionID');
+    return true;
+  },
+};
+
+module.exports = { getUserById, getUserByEmail, getAllUsers, checkLogin, logout };
