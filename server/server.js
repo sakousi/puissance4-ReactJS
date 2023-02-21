@@ -12,10 +12,6 @@ connectDB();
 
 app.use(cors());
 
-// const server = new ApolloServer({ schema });
-// await server.start();
-// server.applyMiddleware({ app });
-
 async function startApolloServer() {
   const server = new ApolloServer({ schema });
   await server.start();
@@ -36,7 +32,7 @@ startApolloServer();
 
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:3100",
+    origin: "http://localhost:3000",
     methods: ["GET", "POST"],
   },
 });

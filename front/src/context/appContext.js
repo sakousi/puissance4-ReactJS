@@ -8,7 +8,7 @@ import Register from '../routes/Register';
 export const AppContext = createContext(null)
 
 export function AppProvider() {
-  const [user, setUser] = useState({loggedIn: false})
+  const [loggedIn, setLoggedIn] = useState(true)
 
   const router = createBrowserRouter([
     {
@@ -21,13 +21,13 @@ export function AppProvider() {
     },
     {
       path: '/',
-      element: user.loggedIn ? (<App />) : (<Login />)
+      element: loggedIn ? (<App />) : (<Login />)
       
     },
   ])
 
   return (
-    <AppContext.Provider value={{user, setUser}}>
+    <AppContext.Provider value={{loggedIn, setLoggedIn}}>
       <RouterProvider router={router} />
     </AppContext.Provider>
   )
