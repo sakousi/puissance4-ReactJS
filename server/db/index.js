@@ -1,11 +1,20 @@
 const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+
+dotenv.config();
+
+const localUri = process.env.MONGODB_URI_LOCAL;
 
 exports.connectDB = async () => {
-  await mongoose.connect("mongodb://admin:password@localhost:27017", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-  console.log("MongoDB connected");
-};
+  try {
 
-// exports.connectDB = connectDB;
+    await mongoose.connect(localUri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("MongoDB connected", localUri);
+  } catch (err) {
+    console.error(err.message);
+    process.exit(1);
+  }
+}

@@ -8,7 +8,7 @@ import Register from '../routes/Register';
 export const AppContext = createContext(null)
 
 export function AppProvider() {
-  const [loggedIn, setLoggedIn] = useState(true)
+  const [loggedIn, setLoggedIn] = useState(false)
 
   const router = createBrowserRouter([
     {

@@ -4,18 +4,22 @@ import { Link, useNavigate } from "react-router-dom";
 import { CHECK_LOGIN } from "../API/userRequest";
 import Header from "../components/Header";
 import { AppContext } from "../context/appContext";
+import { useCookies } from "react-cookie";
 
 export default function Login() {
   const appContext = useContext(AppContext);
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [cookies, setCookie] = useCookies(["session"]);
 
   const [checkLogin, { data: login }] = useLazyQuery(CHECK_LOGIN, {
     onCompleted: (login) => {
       if (login.checkLogin === true) {
         appContext.setLoggedIn(true);
         console.log("loggedIn", true);
+        // setCookie("session", true, { path: "/" });
+        console.log(cookies.session);
         navigate("/");
       }
     },

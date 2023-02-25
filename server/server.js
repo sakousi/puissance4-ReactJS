@@ -3,35 +3,36 @@ const { graphqlHTTP } = require("express-graphql");
 const schema = require("./graphql/schema");
 const { connectDB } = require("./db");
 const http = require("http");
-const app = express();
 const { Server } = require("socket.io");
 const cors = require("cors");
 const { ApolloServer } = require("apollo-server-express");
 const { applyMiddleware } = require("graphql-middleware");
 const cookieParser = require("cookie-parser");
-const bodyParser = require('body-parser')
+const bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
-connectDB();
-app.use(cookieParser());
-app.use(cors());
+const app = require("./app");
+const { config } = require("dotenv");
+// const authUser = require("./middleware/authUser");
+
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 
 app.use(
   bodyParser.json({
-    limit: '50mb',
+    limit: "50mb",
     extended: true,
   })
 );
 app.use(
   bodyParser.urlencoded({
-    limit: '50mb',
+    limit: "50mb",
     extended: true,
   })
 );
-
-app.get("/", (req, res) => {
-  console.log(req.cookies);
-  console.log('Signed Cookies: ', req.signedCookies)
-});
 
 app.use(
   "/graphql",
@@ -44,12 +45,19 @@ app.use(
 const httpServer = http.createServer(app);
 
 async function startApolloServer() {
-  const server = new ApolloServer({ schema });
+  const server = new ApolloServer({
+    schema,
+    context: async ({ req, res }) => ({ req, res }),
+  });
   await server.start();
   server.applyMiddleware({ app });
 }
 
+// Start APOLLO SERVER
 startApolloServer();
+
+// Connect to DB
+connectDB();
 
 const io = new Server(httpServer, {
   cors: {
@@ -70,6 +78,6 @@ io.on("connection", (socket) => {
   });
 });
 
-httpServer.listen(3101, () => {
-  console.log(`Listening on http://localhost:3101/`);
+httpServer.listen(process.env.PORT, () => {
+  console.log(`Listening on http://localhost:${process.env.PORT}/`);
 });
