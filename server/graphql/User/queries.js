@@ -1,5 +1,7 @@
 const User = require("../../models/User");
 const UserType = require("./types");
+const bcrypt = require("bcryptjs");
+
 const { GraphQLID, GraphQLNonNull, GraphQLString, GraphQLList, GraphQLBoolean } = require("graphql");
 
 const getUserById = {
@@ -52,7 +54,8 @@ const checkLogin = {
     if (!user) {
       throw new Error("User not found");
     }
-    const isMatch = user.password === args.password;
+    const isMatch = await bcrypt.compare(args.password, user.password);
+
     if (!isMatch) {
       throw new Error("Password is incorrect");
     }
