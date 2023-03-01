@@ -19,6 +19,8 @@
     "express": "^4.18.2",
     "express-graphql": "^0.12.0",
     "graphql-middleware": "^6.1.33",
+    "graphql-scalars": "^1.20.1",
+    "graphql-shield": "^7.6.5",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.9.2",
     "morgan": "^1.10.0",

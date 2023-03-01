@@ -12,10 +12,11 @@ const {
 
 // Import the mutations
 const { updateUser } = require("./User/mutations");
+const { register, login } = require("./User/authMutations");
 
 // Define the query type
 const QueryType = new GraphQLObjectType({
-  name: "Query",
+  name: "QueryType",
   description: "Root query type",
   fields: {
     getUserById,
@@ -28,10 +29,12 @@ const QueryType = new GraphQLObjectType({
 
 // Define the mutation type
 const MutationType = new GraphQLObjectType({
-  name: "Mutation",
+  name: "MutationType",
   description: "Root mutation type",
   fields: {
     updateUser,
+    register,
+    login,
   },
 });
 

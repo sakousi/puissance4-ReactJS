@@ -7,11 +7,17 @@ const { Server } = require("socket.io");
 const cors = require("cors");
 const { ApolloServer } = require("apollo-server-express");
 const { applyMiddleware } = require("graphql-middleware");
-const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
-const app = require("./app");
+const dotenv = require("dotenv");
+const { authenticate } = require("./middleware/authUser");
+const { permissions } = require("./middleware/permissions");
+const app = express();
 const { config } = require("dotenv");
+const validateEnv = require("./utils/validateEnv");
+dotenv.config();
+validateEnv();
+
 // const authUser = require("./middleware/authUser");
 
 app.use(
@@ -34,10 +40,11 @@ app.use(
   })
 );
 
+app.use(authenticate);
 app.use(
   "/graphql",
   graphqlHTTP({
-    schema: applyMiddleware(schema),
+    schema: applyMiddleware(schema, permissions),
     // graphiql: true,
   })
 );
@@ -47,7 +54,7 @@ const httpServer = http.createServer(app);
 async function startApolloServer() {
   const server = new ApolloServer({
     schema,
-    context: async ({ req, res }) => ({ req, res }),
+    // context: async ({ req, res }) => ({ req, res }),
   });
   await server.start();
   server.applyMiddleware({ app });
@@ -59,6 +66,7 @@ startApolloServer();
 // Connect to DB
 connectDB();
 
+// server socket
 const io = new Server(httpServer, {
   cors: {
     origin: "http://localhost:3000",
@@ -80,4 +88,10 @@ io.on("connection", (socket) => {
 
 httpServer.listen(process.env.PORT, () => {
   console.log(`Listening on http://localhost:${process.env.PORT}/`);
+});
+
+process.on("uncaughtException", (err) => {
+  console.error("UNCAUGHT EXCEPTION 🔥 Shutting down...");
+  console.error("Error🔥", err.message);
+  process.exit(1);
 });

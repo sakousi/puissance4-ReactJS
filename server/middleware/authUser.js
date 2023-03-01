@@ -1,50 +1,35 @@
-const userModel = require("../models/User");
-const { verifyJwt } = require("../utils/jwt");
-const redisClient = require("../utils/redis");
-const { ForbiddenError} = require("apollo-server-core")
-// import userModel from "../models/User";
-const authUser = async (req) => {
+const jwt = require('jsonwebtoken');
+
+const authenticate = async (req, res, next) => {
   try {
-    // Get the access token
-    let access_token;
-    if (
-      req.headers.authorization &&
-      req.headers.authorization.startsWith("Bearer")
-    ) {
-      access_token = req.headers.authorization.split(" ")[1];
-    } else if (req.cookies.access_token) {
-      const { access_token: token } = req.cookies;
-      access_token = token;
+    if (!checkRules(req)) {
+      const token = req.headers.authorization?.split(' ')[1] || '';
+      const verified = jwt.verify(token, process.env.JWT_SECRET);
+      req.verifiedUser = verified.user;
     }
-
-    if (!access_token) return false;
-
-    // Validate the Access token
-    const decoded = verifyJwt(access_token, "JWT_ACCESS_PUBLIC_KEY");
-
-    if (!decoded) return false;
-
-    // Check if the session is valid
-    const session = await redisClient.get(decoded.user);
-
-    if (!session) {
-        throw new ForbiddenError('Session has expired');
-    }
-
-    // Check if user exist
-    const user = await userModel
-      .findById(JSON.parse(session).id)
-      .select("+verified");
-
-    if (!user || !user.verified) {
-        throw new ForbiddenError(
-            'The user belonging to this token no logger exist'
-          );    }
-
-    return user;
-  } catch (error) {
-    console.log(error);
+    next();
+  } catch (err) {
+    console.log('error middleware', err);
+    res.status(401).send(err);
   }
 };
 
-module.exports = authUser;
+const checkRules = (req) => {
+  return true;
+};
+
+const getToken = (headers) => {
+  return headers.authorization?.split(' ')[1] || '';
+};
+
+const verifyToken = (token) => {
+  try {
+    jwt.verify(token, process.env.JWT_SECRET);
+    return true;
+  } catch (err) {
+    console.log('error middleware', err);
+    return false;
+  }
+};
+
+module.exports = { authenticate, getToken, verifyToken };

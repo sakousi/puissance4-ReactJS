@@ -1,6 +1,7 @@
 const { GraphQLObjectType, GraphQLString, GraphQLID } = require('graphql');
 const { User } = require('../../models');
 const mongoose = require('mongoose');
+const { GraphQLDateTime } = require("graphql-scalars");
 
 const UserType = new GraphQLObjectType({
     name: 'User',
@@ -10,6 +11,7 @@ const UserType = new GraphQLObjectType({
         username: { type: GraphQLString },
         email: { type: GraphQLString },
         password: { type: GraphQLString },
+        lastConnexion: { type: GraphQLDateTime },
     })
 });
 
