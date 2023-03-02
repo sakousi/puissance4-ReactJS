@@ -17,7 +17,7 @@ const permissions = shield(
       updateUser: allow,
     },
     QueryType: {
-      checkLogin: allow,
+      getUserById: allow,
     },
   },
   {
