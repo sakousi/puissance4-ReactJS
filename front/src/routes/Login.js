@@ -1,7 +1,7 @@
-import { useLazyQuery } from "@apollo/client";
+import { useLazyQuery, useMutation } from "@apollo/client";
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { CHECK_LOGIN } from "../API/userRequest";
+import { CHECK_LOGIN, LOGIN } from "../API/userRequest";
 import Header from "../components/Header";
 import { AppContext } from "../context/appContext";
 import { useCookies } from "react-cookie";
@@ -11,17 +11,11 @@ export default function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [cookies, setCookie] = useCookies(["session"]);
 
-  const [checkLogin, { data: login }] = useLazyQuery(CHECK_LOGIN, {
-    onCompleted: (login) => {
-      if (login.checkLogin === true) {
-        appContext.setLoggedIn(true);
-        console.log("loggedIn", true);
-        // setCookie("session", true, { path: "/" });
-        console.log(cookies.session);
-        navigate("/");
-      }
+  const [login, { data: loginData }] = useMutation(LOGIN, {
+    onCompleted() {
+      appContext.setLoggedIn(true);
+      navigate("/");
     },
   });
 
@@ -33,7 +27,7 @@ export default function Login() {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            checkLogin({
+            login({
               variables: {
                 email: email,
                 password: password,

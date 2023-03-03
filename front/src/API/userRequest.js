@@ -18,6 +18,30 @@ export const UPDATE_USER = gql`
   }
 `;
 
+export const REGISTER = gql`
+  mutation Register(
+    $id: ID!
+    $username: String!
+    $email: String!
+    $password: String!
+  ) {
+    register(
+      input: {
+        id: $id
+        username: $username
+        email: $email
+        password: $password
+      }
+    )
+  }
+`;
+
+export const LOGIN = gql`
+  mutation Login($email: String!, $password: String!) {
+    login(email: $email, password: $password)
+  }
+`;
+
 export const GET_USER_BY_EMAIL = gql`
   query GetUserByEmail($email: String!) {
     getUserByEmail(email: $email) {
@@ -48,11 +72,5 @@ export const GET_ALL_USERS = gql`
       email
       password
     }
-  }
-`;
-
-export const CHECK_LOGIN = gql`
-  query CheckLogin($email: String!, $password: String!) {
-    checkLogin(email: $email, password: $password)
   }
 `;

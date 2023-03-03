@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { UPDATE_USER } from "../API/userRequest";
+import { REGISTER, UPDATE_USER } from "../API/userRequest";
 import { useMutation } from "@apollo/client";
 import Header from "../components/Header";
 
@@ -10,7 +10,7 @@ export default function Register() {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [updateUser] = useMutation(UPDATE_USER);
+  const [updateUser] = useMutation(REGISTER);
 
   return (
     <>
