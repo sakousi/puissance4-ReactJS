@@ -1,37 +1,29 @@
-import { useMutation } from "@apollo/client";
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { createContext, useState, useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { LOGIN } from "../API/userRequest";
+import { GET_CURRENT_USER, GET_USER_BY_ID, LOGIN } from "../API/userRequest";
 import App from "../App";
 import Login from "../routes/Login";
 import Register from "../routes/Register";
-// import About from '../routes/About';
 
 export const AppContext = createContext(null);
 
 export function AppProvider() {
   const [loggedIn, setLoggedIn] = useState(false);
-  // const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
 
+  const token = localStorage.getItem("token");
 
-  const getEmail = localStorage.getItem("email");
-  const getPassword = localStorage.getItem("password");
-
-  const [login, { data: loginData }] = useMutation(LOGIN, {
-    onCompleted() {
+  const [getUserById] = useLazyQuery(GET_CURRENT_USER, {
+    onCompleted(data) {
+      setCurrentUser(data.getUserById);
       setLoggedIn(true);
-    },
-  });
+    }, 
+  })
 
   useEffect(() => {
-    if (getEmail && getPassword) {
-      console.log("useEffect");
-      login({
-        variables: {
-          email: getEmail,
-          password: getPassword,
-        },
-      });
+    if (token) {
+      getUserById({})
     }
   }, []);
 

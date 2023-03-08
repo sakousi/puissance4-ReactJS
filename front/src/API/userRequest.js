@@ -64,6 +64,18 @@ export const GET_USER_BY_ID = gql`
   }
 `;
 
+export const GET_CURRENT_USER = gql`
+  query GetUserById {
+    getUserById {
+      id
+      username
+      email
+      password
+      lastConnexion
+    }
+  }
+`;
+
 export const GET_ALL_USERS = gql`
   query GetAllUsers {
     getAllUsers {

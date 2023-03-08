@@ -1,9 +1,11 @@
 const jwt = require('jsonwebtoken');
 
 const authenticate = async (req, res, next) => {
+
+  const token = getToken(req.headers);
+
   try {
-    if (!checkRules(req)) {
-      const token = req.headers.authorization?.split(' ')[1] || '';
+    if (token) {
       const verified = jwt.verify(token, process.env.JWT_SECRET);
       req.verifiedUser = verified.user;
     }
@@ -12,10 +14,6 @@ const authenticate = async (req, res, next) => {
     console.log('error middleware', err);
     res.status(401).send(err);
   }
-};
-
-const checkRules = (req) => {
-  return true;
 };
 
 const getToken = (headers) => {

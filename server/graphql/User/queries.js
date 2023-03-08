@@ -1,8 +1,10 @@
 const User = require("../../models/User");
 const UserType = require("./types");
 const bcrypt = require("bcryptjs");
+const jwt = require('jsonwebtoken');
 
 const { GraphQLID, GraphQLNonNull, GraphQLString, GraphQLList, GraphQLBoolean } = require("graphql");
+const { getToken } = require("../../middleware/authUser");
 
 const getUserById = {
   type: UserType,
@@ -12,8 +14,12 @@ const getUserById = {
       type: GraphQLID,
     },
   },
-  resolve: async (parent, args) => {
-    return await User.find({ id: args.id });
+  resolve: async (parent, args, context) => {
+    let userId = args?.id;
+    if (!userId) {
+      userId = jwt.decode(getToken(context.headers), process.env.JWT_SECRET)?.user?._id;
+    }
+    return await User.findOne({ id: userId });
   },
 };
 
