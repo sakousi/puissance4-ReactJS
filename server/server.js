@@ -54,7 +54,10 @@ const httpServer = http.createServer(app);
 async function startApolloServer() {
   const server = new ApolloServer({
     schema,
-    // context: async ({ req, res }) => ({ req, res }),
+    context: ({ req }) => {
+      const user = authenticate(req);
+      return { user };
+    },
   });
   await server.start();
   server.applyMiddleware({ app });
