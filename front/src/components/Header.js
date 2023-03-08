@@ -9,6 +9,8 @@ export default function Header() {
 
   const handleLogout = () => {
     appContext.setLoggedIn(false);
+    localStorage.removeItem("token");
+    window.location.reload();
     client.resetStore();
   };
 

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { REGISTER, UPDATE_USER } from "../API/userRequest";
+import { REGISTER } from "../API/userRequest";
 import { useMutation } from "@apollo/client";
 import Header from "../components/Header";
 
