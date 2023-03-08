@@ -10,7 +10,11 @@ export default function Register() {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [updateUser] = useMutation(REGISTER);
+  const [updateUser] = useMutation(REGISTER, {
+    onCompleted() {
+      navigate("/login");
+    }
+  });
 
   return (
     <>
@@ -28,7 +32,6 @@ export default function Register() {
                 password: password,
               },
             });
-            navigate("/login");
           }}
         >
           <div className="mb-6">

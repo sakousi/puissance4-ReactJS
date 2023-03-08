@@ -38,7 +38,7 @@ export function AppProvider() {
     },
     {
       path: "/",
-      element: loggedIn ? <App /> : <Login />,
+      element: <App />,
     },
   ]);
 

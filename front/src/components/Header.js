@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AppContext } from "../context/appContext";
 import { useApolloClient } from "@apollo/client";
@@ -6,7 +6,7 @@ import { useApolloClient } from "@apollo/client";
 export default function Header() {
   const appContext = useContext(AppContext);
   const client = useApolloClient();
-
+  
   const handleLogout = () => {
     appContext.setLoggedIn(false);
     localStorage.removeItem("token");
