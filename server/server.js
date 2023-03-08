@@ -18,8 +18,6 @@ const validateEnv = require("./utils/validateEnv");
 dotenv.config();
 validateEnv();
 
-// const authUser = require("./middleware/authUser");
-
 app.use(
   cors({
     origin: "http://localhost:3000",

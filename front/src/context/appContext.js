@@ -3,6 +3,7 @@ import { createContext, useState, useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { GET_CURRENT_USER, GET_USER_BY_ID, LOGIN } from "../API/userRequest";
 import App from "../App";
+import Connect4 from "../routes/Connect4";
 import Login from "../routes/Login";
 import Register from "../routes/Register";
 
@@ -40,6 +41,10 @@ export function AppProvider() {
       path: "/",
       element: <App />,
     },
+    {
+      path: "/connect4",
+      element: <Connect4 />,
+    }
   ]);
 
   return (

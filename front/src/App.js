@@ -6,23 +6,20 @@ import { UPDATE_USER } from "./API/userRequest";
 import { gql, useMutation } from "@apollo/client";
 import { useState } from "react";
 import Header from "./components/Header";
+import GameOne from "./components/Home/GameOne";
 
 const socket = io.connect("http://localhost:3101");
 
 export default function App() {
-  const [userInput, setUserInput] = useState("");
-  const [updateUser] = useMutation(UPDATE_USER);
-
   return (
     <>
       <Header></Header>
-      <div className="dark:bg-gray-900 h-screen">
-        <h2 className="text-white">My first Apollo app 🚀</h2>
-        <form className="formInput">
-          <input className="input" placeholder="What needs to be done?" />
-          <i className="inputMarker fa fa-angle-right" />
-        </form>
-      </div>
+      <section className="flex flex-col dark:bg-gray-900 h-screen">
+        <h1 className="text-white text-4xl text-center">Games</h1>
+        <div className="grid grid-cols-3 mx-14 my-8 gap-8">
+          <GameOne></GameOne>
+        </div>
+      </section>
     </>
   );
 }
