@@ -16,7 +16,7 @@ export default function GameType() {
             return (
               <li key={index} className="w-full">
                 <button
-                  className="inline-block w-full p-4 bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600"
+                  className={index === 0 ? "rounded-tl-lg inline-block w-full p-4 bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600" : (index === 2) ? "rounded-tr-lg inline-block w-full p-4 bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600" : "inline-block w-full p-4 bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600"}
                   onClick={() => handleTabClick(index)}
                 >
                   {item}
