@@ -3,10 +3,10 @@ import { useState } from "react";
 export default function GameType() {
   const [activeTab, setActiveTab] = useState(0);
 
-  function handleTabClick() {
+  const handleTabClick = (index) => {
     console.log("you");
-    // setActiveTab(index);
-  }
+    setActiveTab(index);
+  };
 
   return (
     <div className="col-span-2 max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 min-w-full">
@@ -17,12 +17,25 @@ export default function GameType() {
               <li key={index} className="w-full">
                 <button
                   className="inline-block w-full p-4 bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600"
-                  onSubmit={handleTabClick()}
+                  onClick={() => handleTabClick(index)}
                 >
                   {item}
                 </button>
               </li>
             );
+          })}
+        </ul>
+      </div>
+      <div className="">
+        <ul>
+          {["Multiplayer", "Join Room", "Create Room"].map((item, index) => {
+            if (activeTab === index) {
+              return (
+                <li key={index} className="w-full">
+                  <p className="text-white text-3xl text-center">{item}</p>
+                </li>
+              );
+            }
           })}
         </ul>
       </div>
