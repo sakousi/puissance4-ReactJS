@@ -7,8 +7,6 @@ import { useState } from "react";
 import Header from "./components/Header";
 import GameOne from "./components/Home/GameOne";
 
-// const socket = io.connect("http://localhost:3101");
-
 export default function App() {
   return (
     <>

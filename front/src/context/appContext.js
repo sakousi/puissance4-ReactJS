@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { GET_CURRENT_USER, GET_USER_BY_ID, LOGIN } from "../API/userRequest";
 import App from "../App";
 import Connect4 from "../routes/Connect4";
+import Connect4Game from "../routes/Connect4Game";
 import Login from "../routes/Login";
 import Register from "../routes/Register";
 
@@ -44,6 +45,10 @@ export function AppProvider() {
     {
       path: "/connect4",
       element: <Connect4 />,
+    },
+    {
+      path: "/connect4/:id",
+      element: <Connect4Game />,
     }
   ]);
 
