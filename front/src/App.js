@@ -1,14 +1,13 @@
 import "./reset.css";
 import "./App.css";
 import "./index.css";
-import io from "socket.io-client";
 import { UPDATE_USER } from "./API/userRequest";
 import { gql, useMutation } from "@apollo/client";
 import { useState } from "react";
 import Header from "./components/Header";
 import GameOne from "./components/Home/GameOne";
 
-const socket = io.connect("http://localhost:3101");
+// const socket = io.connect("http://localhost:3101");
 
 export default function App() {
   return (
