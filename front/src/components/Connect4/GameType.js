@@ -8,6 +8,9 @@ export default function GameType() {
     setActiveTab(index);
   };
 
+  const baseStyle =
+    "inline-block w-full p-4 bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600";
+
   return (
     <div className="col-span-2 max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 min-w-full">
       <div className="flex flex-col">
@@ -16,7 +19,9 @@ export default function GameType() {
             return (
               <li key={index} className="w-full">
                 <button
-                  className={index === 0 ? "rounded-tl-lg inline-block w-full p-4 bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600" : (index === 2) ? "rounded-tr-lg inline-block w-full p-4 bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600" : "inline-block w-full p-4 bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600"}
+                  className={`${baseStyle} ${
+                    index === 0 ? "rounded-tl-lg" : ""
+                  } ${index === 2 ? "rounded-tr-lg" : ""}`}
                   onClick={() => handleTabClick(index)}
                 >
                   {item}
