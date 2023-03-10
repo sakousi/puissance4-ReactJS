@@ -1,9 +1,18 @@
+import Column from "./Column";
+
 export default function Board() {
+
+  let columns = 7;
+  
   return (
-    <>
-      <section className="dark:bg-gray-900 h-screen">
-        <h1 className="text-white text-5xl">Connect 4</h1>
-      </section>
-    </>
+    <section className="flex items-center justify-center dark:bg-gray-900">
+      <div className="flex my-14 rounded-lg dark:bg-gray-600">
+        {
+          Array(columns).fill().map((_, i) => (
+            <Column key={i} id={i}></Column>
+          ))
+        }
+      </div>
+    </section>
   );
 }
