@@ -1,5 +1,5 @@
 export default function Column(id) {
-    console.log(id)
+
   let circles = 6;
 
   return (

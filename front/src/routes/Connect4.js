@@ -1,12 +1,9 @@
 import Header from "../components/Header";
-import io from "socket.io-client";
 import Store from "../components/Connect4/Store";
 import GameType from "../components/Connect4/GameType";
 import Leaderboard from "../components/Connect4/Leaderboard";
 
 export default function Connect4() {
-
-  const socket = io.connect("http://localhost:3101");
 
   return (
     <>

@@ -1,3 +1,5 @@
+import socket from "../../../socket";
+
 export default function JoinRoom() {
     return (
         <form className="flex flex-col justify-center items-center my-20">

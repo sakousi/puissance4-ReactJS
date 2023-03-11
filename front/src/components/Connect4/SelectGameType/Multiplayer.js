@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import socket from "../../../socket";
 
 export default function Multiplayer() {
   const navigate = useNavigate();

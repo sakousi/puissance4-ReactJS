@@ -75,17 +75,38 @@ const io = new Server(httpServer, {
   },
 });
 
+let rooms = [];
+
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
 
-  socket.on("join_room", (data) => {
-    socket.join(data);
+  socket.on("createRoom", () => {
+    const roomId = `room-${generateId()}`;
+    rooms.push(roomId);
+    socket.emit("roomCreated", roomId);
+    console.log(`Client ${socket.id} created room ${roomId}`);
   });
 
-  socket.on("send_message", (data) => {
-    socket.to(data.room).emit("receive_message", data);
+  socket.on("joinRoom", (roomId) => {
+    if (rooms.includes(roomId)) {
+      socket.join(roomId);
+      socket.emit("roomJoined", roomId);
+      console.log(`Client ${socket.id} joined room ${roomId}`);
+    } else {
+      socket.emit("roomNotFound");
+    }
+  });
+
+  socket.on("disconnect", () => {
+    console.log(`Client ${socket.id} disconnected`);
   });
 });
+
+function generateId() {
+  const timestamp = Date.now().toString(36);
+  const randomStr = Math.random().toString(36).substr(2, 5);
+  return `${timestamp}${randomStr}`;
+}
 
 httpServer.listen(process.env.PORT, () => {
   console.log(`Listening on http://localhost:${process.env.PORT}/`);
