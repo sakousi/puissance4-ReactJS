@@ -1,12 +1,29 @@
 import { useNavigate } from "react-router-dom";
 import socket from "../../../socket";
+import { Connect4GameContext } from "../../../context/Connect4GameContext";
+import { useContext, useEffect } from "react";
 
 export default function Multiplayer() {
   const navigate = useNavigate();
+  const gameContext = useContext(Connect4GameContext);
 
-  const handleSubmit = () => {
-    navigate("/connect4/1234");
-  };
+  function createBoard(numColumns, numCircles) {
+    const board = [];
+    for (let i = 0; i < numColumns; i++) {
+      const column = Array(numCircles).fill(0);
+      board.push(column);
+    }
+    return board;
+  }
+
+  useEffect(() => {
+    if (gameContext.boardList.length > 0) {
+      console.log(gameContext.boardList)
+      navigate("/connect4/1234");
+    }
+  }, [gameContext.boardList]);
+
+  let board = createBoard(7, 6);
 
   return (
     <form className="flex flex-col justify-center items-center my-20">
@@ -24,7 +41,12 @@ export default function Multiplayer() {
       </div>
       <button
         type="submit"
-        onClick={handleSubmit}
+        onClick={(e) => {
+          e.preventDefault();
+          gameContext.setBoardList(board);
+          console.log(gameContext.boardList);
+
+        }}
         className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
       >
         Search for a game

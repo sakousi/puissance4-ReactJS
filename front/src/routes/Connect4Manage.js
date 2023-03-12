@@ -2,9 +2,9 @@ import Header from "../components/Header";
 import Store from "../components/Connect4/Store";
 import GameType from "../components/Connect4/GameType";
 import Leaderboard from "../components/Connect4/Leaderboard";
+import Connect4GameProvider from "../context/Connect4GameContext";
 
-export default function Connect4() {
-
+export default function Connect4Manage() {
   return (
     <>
       <Header></Header>
