@@ -14,7 +14,6 @@ export default function Connect4Game() {
     socket.on("info", (data) => {
       opponent.current = data.find((player) => player.socketId !== socket.id);
       gameContext.setOpponent(opponent.current);
-      console.log(opponent.current)
     });
   }, []);
 
