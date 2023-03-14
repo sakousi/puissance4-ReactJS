@@ -2,39 +2,55 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { Connect4GameContext } from "../../context/Connect4GameContext";
 import socket from "../../socket";
 
-export default function Column(id) {
+export default function Column(props) {
   const gameContext = useContext(Connect4GameContext);
-  const [boardList, setBoardList] = useState(gameContext.boardList);
-  const [highestChanged, setHighestChanged] = useState(-1);
-
+  const currentPlayer = useRef(null);
   let circles = 6;
 
+  // currentPlayer.current = gameContext.currentPlayer;
   function handleClick(e) {
-    const [rowId, colId] = e.target.id.split("-");
+    if (!currentPlayer.current) {
+      currentPlayer.current = gameContext.currentPlayer;
+    }
 
-    // Change color of top-most circle in column
-    const topLi = document.getElementById(`${id.id}-${circles - 1}`);
-    if (topLi && !topLi.classList.contains("bg-red-500")) {
-      topLi.classList.add("bg-red-500");
-      topLi.classList.remove("dark:bg-gray-900");
-
-      const player = gameContext.currentPlayer;
-      const data = {
-        player,
-        column: colId,
-      };
-      socket.emit("move", data);
+    if (currentPlayer.current.turn) {
+      socket.emit("move", props.id);
     }
   }
 
+  useEffect(() => {
+    socket.on("move", (board, playedCell, socketId, players) => {
+      currentPlayer.current = players.find(
+        (player) => player.socketId === socket.id
+      );
+
+      const opponent = players.find((player) => player.socketId !== socket.id);
+      gameContext.setBoardList(board);
+
+      const casePlayed = document.getElementById(
+        `${playedCell.column}-${playedCell.row}`
+      );
+
+      if (socketId === currentPlayer.current.socketId) {
+        casePlayed.classList.add("bg-yellow-500");
+        casePlayed.classList.remove("dark:bg-gray-900");
+        gameContext.setCurrentPlayer(currentPlayer);
+      } else {
+        casePlayed.classList.add("bg-red-500");
+        casePlayed.classList.remove("dark:bg-gray-900");
+        gameContext.setOpponent(opponent);
+      }
+    });
+  }, []);
+
   return (
-    <ul id={`row-${id.id}`} onClick={handleClick} className="">
+    <ul id={`row-${props.id}`} onClick={handleClick} className="">
       {Array(circles)
         .fill()
         .map((_, i) => (
           <li
             key={i}
-            id={`${id.id}-${circles - 1 - i}`}
+            id={`${props.id}-${circles - 1 - i}`}
             className="rounded-full m-2 h-14 w-14 dark:bg-gray-900"
           ></li>
         ))}

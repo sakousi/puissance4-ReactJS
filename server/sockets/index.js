@@ -16,7 +16,7 @@ function createSockets(httpServer) {
   io.on("connection", (socket) => {
     console.log(`User Connected: ${socket.id}`);
     // Gameplay events
-    gameplaySocket(socket, io, rooms);
+    gameplaySocket(socket, io, rooms, findRoomById);
 
     // Lobby events
     lobbySocket(socket, io, rooms, generateId, findRoomById);

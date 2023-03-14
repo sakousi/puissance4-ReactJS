@@ -2,16 +2,18 @@
 // const {  findRoomById } = require("./index");
 
 module.exports = (socket, io, rooms, generateId, findRoomById) => {
-  socket.on("createRoom", (currentPlayer) => {
+  socket.on("createRoom", (currentPlayer, board) => {
     player = currentPlayer;
     if (player.roomId) {
       return;
     }
     let roomId;
+    let roomPlayer;
     // Vérifie si une room avec un joueur existe
     for (const room of rooms) {
       if (room.players.length === 1) {
         player.roomId = room.id;
+        roomPlayer = room;
         room.players.push(player);
         roomId = room.id;
         break;
@@ -22,9 +24,9 @@ module.exports = (socket, io, rooms, generateId, findRoomById) => {
       console.log("create room");
       roomId = `room-${generateId()}`;
       player.roomId = roomId;
-      let room = { id: roomId, players: [player] };
+      player.turn = true;
+      let room = { id: roomId, players: [player], board: board };
       rooms.push(room);
-      console.log(roomId);
       socket.emit("roomCreated", roomId);
       console.log(`Client ${socket.id} created room ${roomId}`);
     }
@@ -32,11 +34,14 @@ module.exports = (socket, io, rooms, generateId, findRoomById) => {
     socket.emit("roomJoined", roomId);
     console.log(`Client ${socket.id} joined room ${roomId}`);
     console.log(rooms);
+
+    if (roomPlayer?.players.length === 2) {
+      io.to(roomId).emit("startGame", roomPlayer.players);
+    }
   });
 
   socket.on("info", () => {
     let room = findRoomById(socket.id, rooms);
-    console.log("you", room?.id);
     io.to(room?.id).emit("info", room?.players);
   });
 };

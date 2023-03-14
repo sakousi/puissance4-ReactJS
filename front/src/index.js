@@ -8,12 +8,6 @@ import { setContext } from '@apollo/client/link/context';
 // http://localhost:3000
 // mongodb://admin:password@localhost:27017
 
-// const client = new ApolloClient({
-//   uri: "http://localhost:3101/graphql",
-//   cache: new InMemoryCache(),
-// });
-
-
 const httpLink = createHttpLink({
   uri: "http://localhost:3101/graphql",
 });
