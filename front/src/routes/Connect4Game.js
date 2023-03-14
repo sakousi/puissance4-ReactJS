@@ -1,53 +1,26 @@
-import { Children, createContext, useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Header from "../components/Header";
-import io from "socket.io-client";
 import GamePlayersTab from "../components/Connect4Game/GamePlayersTab";
 import Board from "../components/Connect4Game/Board";
+import { useContext, useEffect, useRef } from "react";
+import { Connect4GameContext } from "../context/Connect4GameContext";
 import socket from "../socket";
-import Connect4GameProvider from "../context/Connect4GameContext";
 
 export default function Connect4Game() {
-  const [roomId, setRoomId] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const gameContext = useContext(Connect4GameContext);
+  const opponent = useRef(null);
+  
+  useEffect(() => {
+    socket.emit("info");
 
-  const handleCreateRoom = () => {
-    socket.emit("createRoom");
-  };
-
-  const handleJoinRoom = () => {
-    socket.emit("joinRoom", roomId);
-  };
-
-  socket.on("roomCreated", (data) => {
-    setRoomId(data);
-  });
-
-  socket.on("roomJoined", (data) => {
-    setRoomId(data);
-  });
-
-  socket.on("roomNotFound", () => {
-    setErrorMessage("Room not found");
-  });
+    socket.on("info", (data) => {
+      opponent.current = data.find((player) => player.socketId !== socket.id);
+      gameContext.setOpponent(opponent.current);
+      console.log(opponent.current)
+    });
+  }, []);
 
   return (
     <section className="flex flex-col dark:bg-gray-900 min-h-screen">
       <GamePlayersTab></GamePlayersTab>
-      <div>
-        <button className="text-white" onClick={handleCreateRoom}>
-          Create Room
-        </button>
-        <input
-          type="text"
-          value={roomId}
-          onChange={(e) => setRoomId(e.target.value)}
-        />
-        <button className="text-white" onClick={handleJoinRoom}>
-          Join Room
-        </button>
-        {errorMessage && <p>{errorMessage}</p>}
-      </div>
       <Board></Board>
     </section>
   );

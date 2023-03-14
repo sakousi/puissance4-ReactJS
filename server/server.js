@@ -15,6 +15,8 @@ const { permissions } = require("./middleware/permissions");
 const app = express();
 const { config } = require("dotenv");
 const validateEnv = require("./utils/validateEnv");
+const { createSockets } = require("./sockets/index");
+
 dotenv.config();
 validateEnv();
 
@@ -68,45 +70,7 @@ startApolloServer();
 connectDB();
 
 // server socket
-const io = new Server(httpServer, {
-  cors: {
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST"],
-  },
-});
-
-let rooms = [];
-
-io.on("connection", (socket) => {
-  console.log(`User Connected: ${socket.id}`);
-
-  socket.on("createRoom", () => {
-    const roomId = `room-${generateId()}`;
-    rooms.push(roomId);
-    socket.emit("roomCreated", roomId);
-    console.log(`Client ${socket.id} created room ${roomId}`);
-  });
-
-  socket.on("joinRoom", (roomId) => {
-    if (rooms.includes(roomId)) {
-      socket.join(roomId);
-      socket.emit("roomJoined", roomId);
-      console.log(`Client ${socket.id} joined room ${roomId}`);
-    } else {
-      socket.emit("roomNotFound");
-    }
-  });
-
-  socket.on("disconnect", () => {
-    console.log(`Client ${socket.id} disconnected`);
-  });
-});
-
-function generateId() {
-  const timestamp = Date.now().toString(36);
-  const randomStr = Math.random().toString(36).substr(2, 5);
-  return `${timestamp}${randomStr}`;
-}
+createSockets(httpServer);
 
 httpServer.listen(process.env.PORT, () => {
   console.log(`Listening on http://localhost:${process.env.PORT}/`);
