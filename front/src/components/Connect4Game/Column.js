@@ -1,4 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Connect4GameContext } from "../../context/Connect4GameContext";
 import socket from "../../socket";
 
@@ -7,6 +8,7 @@ export default function Column(props) {
   const currentPlayer = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [victory, setVictory] = useState(false);
+  const navigate = useNavigate()
   let circles = 6;
 
   // currentPlayer.current = gameContext.currentPlayer;
@@ -21,6 +23,11 @@ export default function Column(props) {
   }
 
   useEffect(() => {
+
+    if (!gameContext.currentPlayer) {
+      navigate("/connect4");
+    }
+
     socket.on("move", (board, playedCell, socketId, players, victory) => {
       currentPlayer.current = players.find(
         (player) => player.socketId === socket.id
@@ -54,7 +61,7 @@ export default function Column(props) {
         }
       }
     });
-  }, []);
+  }, [gameContext.currentPlayer]);
 
   return (
     <>
@@ -72,10 +79,7 @@ export default function Column(props) {
       {isOpen && (
         <div
           id="popup-modal"
-          className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full bg-black bg-opacity-50 z-10 flex items-center justify-center"
-          onClick={() => {
-            setIsOpen(false);
-          }}        
+          className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full bg-black bg-opacity-50 z-10 flex items-center justify-center"       
         >
           <div className="relative z-20 text-center bg-white rounded-lg shadow dark:bg-gray-700 px-2 py-4">
             <svg
@@ -96,15 +100,23 @@ export default function Column(props) {
             <h3 class=" mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
               {victory ? "VICTORY" : "DEFEAT"}
             </h3>
-
+            <button
+              type="button"
+              className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
+              onClick={() => {
+                console.log("play again")
+              }}
+            >
+              Play again
+            </button>
             <button
               type="button"
               className="text-white bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
               onClick={() => {
-                setIsOpen(false);
+                gameContext.setCurrentPlayer(null);
               }}
             >
-              Close MODALE
+              Leave Game
             </button>
           </div>
         </div>
