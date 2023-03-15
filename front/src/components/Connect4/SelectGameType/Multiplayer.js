@@ -5,6 +5,14 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { updateCurrentPlayer, createBoard } from "../../../utils/functions";
 import Connect4Game from "../../../routes/Connect4Game";
 
+function randomId() {
+  return Math.floor(Math.random() * (999 - 100 + 1) + 100);
+}
+
+function generateUsername() {
+  return `Player${randomId()}`;
+}
+
 export default function Multiplayer() {
   const navigate = useNavigate();
   const gameContext = useContext(Connect4GameContext);
@@ -13,6 +21,7 @@ export default function Multiplayer() {
   const currentPlayer = useRef(null);
 
   useEffect(() => {
+    setUsername(generateUsername());
     socket.on("roomJoined", (data) => {
       roomId.current = data;
       currentPlayer.current = {
@@ -22,6 +31,7 @@ export default function Multiplayer() {
         turn: false,
         win: false,
         wantRestart: false,
+        color: "",
       };
       gameContext.setCurrentPlayer(currentPlayer.current);
     });
@@ -63,6 +73,7 @@ export default function Multiplayer() {
               turn: false,
               win: false,
               wantRestart: false,
+              color: "",
             };
             gameContext.setBoardList(createBoard(7, 6));
             socket.emit("createRoom", currentPlayer.current, createBoard(7, 6));

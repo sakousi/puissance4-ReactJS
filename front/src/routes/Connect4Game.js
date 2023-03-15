@@ -7,13 +7,15 @@ import socket from "../socket";
 export default function Connect4Game() {
   const gameContext = useContext(Connect4GameContext);
   const opponent = useRef(null);
-  
+
   useEffect(() => {
     socket.emit("info");
 
     socket.on("info", (data) => {
       opponent.current = data.find((player) => player.socketId !== socket.id);
-      gameContext.setOpponent(opponent.current);
+      if (opponent.current) {
+        gameContext.setOpponent(opponent.current);
+      }
     });
   }, []);
 

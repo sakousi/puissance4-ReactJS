@@ -13,6 +13,7 @@ module.exports = (socket, io, rooms, generateId, findRoomById) => {
     for (const room of rooms) {
       if (room.players.length === 1) {
         player.roomId = room.id;
+        player.color = "bg-yellow-500"
         roomPlayer = room;
         room.players.push(player);
         roomId = room.id;
@@ -25,6 +26,7 @@ module.exports = (socket, io, rooms, generateId, findRoomById) => {
       roomId = `room-${generateId()}`;
       player.roomId = roomId;
       player.turn = true;
+      player.color = "bg-red-500"
       let room = { id: roomId, players: [player], board: board };
       rooms.push(room);
       socket.emit("roomCreated", roomId);

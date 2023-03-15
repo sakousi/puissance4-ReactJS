@@ -16,7 +16,9 @@ export default function Board() {
         if (player.socketId === socket.id) {
           gameContext.setCurrentPlayer(player);
         } else {
-          gameContext.setOpponent(player);
+          if (player) {
+            gameContext.setOpponent(player);
+          }
         }
       });
     });
