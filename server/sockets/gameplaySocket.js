@@ -22,13 +22,17 @@ module.exports = (socket, io, rooms, findRoomById) => {
             column: Number(colPlayed),
             row: i,
           };
-
+          room.cellPlayed += 1;
           room.players[playerIndex].turn = false;
           room.players[opponentIndex].turn = true;
 
-          if (getWinner(colPlayed, i, room.board)) {
+          if (getWinner(colPlayed, i, room.board) || room.cellPlayed === 42) {
+            let draw = false;
+            if (room.cellPlayed === 42) {
+              draw = true;
+            }
             room.players[opponentIndex].turn = false;
-            io.to(room?.id).emit("victory", socket.id);
+            io.to(room?.id).emit("victory", socket.id, draw);
           }
 
           return io
@@ -56,6 +60,7 @@ module.exports = (socket, io, rooms, findRoomById) => {
     let room = findRoomById(socket.id, rooms);
     if (board) {
       room.board = board;
+      room.playedCell = 0;
     }
     const firstPlayerIndex = Math.random() < 0.5 ? 0 : 1;
     room.players.forEach((player, index) => {

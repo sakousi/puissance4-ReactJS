@@ -19,13 +19,16 @@ export default function Board() {
   const navigate = useNavigate();
   const [alertMessage, setAlertMessage] = useState(null);
   const { socket, connect } = useContext(Connect4GameContext);
+  const [draw, setDraw] = useState(false);
 
   useEffect(() => {
     if (!socket) return;
 
-    socket.on("victory", (socketId) => {
+    socket.on("victory", (socketId, draw) => {
       setIsOpen(true);
-      if (socketId === socket.id) {
+      if (draw) {
+        return setDraw(true);
+      } else if (socketId === socket.id) {
         setVictory(true);
       }
     });
@@ -76,7 +79,7 @@ export default function Board() {
   }, []);
 
   useEffect(() => {
-    if (!gameContext.currentPlayer) {
+    if (!gameContext.currentPlayer && !socket) {
       navigate("/connect4");
     }
     setBoardList(gameContext.boardList);
@@ -99,6 +102,7 @@ export default function Board() {
     gameContext.currentPlayer,
     navigate,
     resetRequested,
+    socket,
   ]);
 
   function handlePlayAgain() {
@@ -134,7 +138,7 @@ export default function Board() {
             </svg>
 
             <h3 className=" mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-              {victory ? "VICTORY" : "DEFEAT"}
+              {draw ? "DRAW" : victory ? "VICTORY" : "DEFEAT"}
             </h3>
             <h2 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
               {opponentWantsToPlayAgain === true
@@ -157,6 +161,7 @@ export default function Board() {
               className="text-white bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
               onClick={() => {
                 gameContext.setCurrentPlayer(null);
+                socket.disconnect();
               }}
             >
               Leave Game

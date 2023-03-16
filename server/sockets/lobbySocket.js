@@ -27,7 +27,7 @@ module.exports = (socket, io, rooms, generateId, findRoomById) => {
       player.roomId = roomId;
       player.turn = true;
       player.color = "bg-red-500"
-      let room = { id: roomId, players: [player], board: board };
+      let room = { id: roomId, players: [player], board: board, cellPlayed: 0};
       rooms.push(room);
       socket.emit("roomCreated", roomId);
       console.log(`Client ${socket.id} created room ${roomId}`);
