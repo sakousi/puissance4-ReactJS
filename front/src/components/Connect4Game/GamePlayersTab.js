@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Connect4GameContext } from "../../context/Connect4GameContext";
 import { useNavigate } from "react-router-dom";
-import socket from "../../socket";
 
 export default function GamePlayersTab() {
   const gameContext = useContext(Connect4GameContext);
@@ -10,12 +9,15 @@ export default function GamePlayersTab() {
   const opponent = gameContext.opponent;
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
+  const { socket, connect } = useContext(Connect4GameContext);
 
   useEffect(() => {
-    if (!gameContext.currentPlayer) {
+
+    if (!gameContext.currentPlayer && !socket) {
       navigate("/connect4");
     }
-  }, [gameContext.currentPlayer]);
+
+  }, []);
 
   return (
     <>

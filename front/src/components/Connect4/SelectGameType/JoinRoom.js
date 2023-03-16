@@ -1,4 +1,3 @@
-import socket from "../../../socket";
 
 export default function JoinRoom() {
     return (

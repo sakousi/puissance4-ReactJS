@@ -3,8 +3,7 @@
 module.exports = (socket, io, rooms, findRoomById) => {
   socket.on("move", (colPlayed) => {
     let room = findRoomById(socket.id, rooms);
-    // let player = room.players.find((player) => player.socketId === socket.id);
-    // let opponent = room.players.find((player) => player.socketId !== socket.id);
+
     let playerIndex = room.players.findIndex(
       (player) => player.socketId === socket.id
     );

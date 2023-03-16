@@ -1,7 +1,6 @@
 import Column from "./Column";
 import { Connect4GameContext } from "../../context/Connect4GameContext";
 import { useContext, useEffect, useRef, useState } from "react";
-import socket from "../../socket";
 import { createBoard } from "../../utils/functions";
 import { useNavigate } from "react-router-dom";
 
@@ -19,8 +18,11 @@ export default function Board() {
   const [resetRequested, setResetRequested] = useState(false);
   const navigate = useNavigate();
   const [alertMessage, setAlertMessage] = useState(null);
+  const { socket, connect } = useContext(Connect4GameContext);
 
   useEffect(() => {
+    if (!socket) return;
+
     socket.on("victory", (socketId) => {
       setIsOpen(true);
       if (socketId === socket.id) {

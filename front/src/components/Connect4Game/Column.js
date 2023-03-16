@@ -1,7 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Connect4GameContext } from "../../context/Connect4GameContext";
-import socket from "../../socket";
 import { createBoard } from "../../utils/functions";
 
 function resetHtmlBoard(colId) {
@@ -18,6 +17,7 @@ export default function Column(props) {
   const currentPlayer = useRef(null);
   const navigate = useNavigate();
   let circles = 6;
+  const { socket, connect } = useContext(Connect4GameContext);
 
   function handleClick(e) {
     if (!currentPlayer.current) {
@@ -30,6 +30,8 @@ export default function Column(props) {
   }
 
   useEffect(() => {
+    if (!socket) return;
+
     socket.on("move", (board, playedCell, socketId, players, victory) => {
       currentPlayer.current = players.find(
         (player) => player.socketId === socket.id

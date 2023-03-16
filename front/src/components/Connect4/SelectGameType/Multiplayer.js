@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import socket from "../../../socket";
+// import socket from "../../../socket";
 import { Connect4GameContext } from "../../../context/Connect4GameContext";
 import { useContext, useEffect, useRef, useState } from "react";
 import { updateCurrentPlayer, createBoard } from "../../../utils/functions";
@@ -16,11 +16,40 @@ function generateUsername() {
 export default function Multiplayer() {
   const navigate = useNavigate();
   const gameContext = useContext(Connect4GameContext);
+  const { socket, connect } = useContext(Connect4GameContext);
   const [username, setUsername] = useState("");
   const roomId = useRef(null);
   const currentPlayer = useRef(null);
+  const [isButtonClicked, setIsButtonClicked] = useState(false);
+  const isButtonClickedRef = useRef(false);
+
+  const handleSearch = () => {
+    console.log("handleSearch");
+    isButtonClickedRef.current = true;
+    setIsButtonClicked(true);
+    if (!socket) {
+      connect();
+    } else if (socket.connected) {
+      currentPlayer.current = {
+        userName: username,
+        socketId: socket.id,
+        roomId: roomId.current,
+        turn: false,
+        win: false,
+        wantRestart: false,
+        color: "",
+      };
+      gameContext.setBoardList(createBoard(7, 6));
+      socket?.emit("createRoom", currentPlayer.current, createBoard(7, 6));
+    } else {
+      socket.connect()
+    }
+    gameContext.setBoardList(createBoard(7, 6));
+  };
 
   useEffect(() => {
+    if (!socket) return;
+
     socket.on("roomJoined", (data) => {
       roomId.current = data;
       currentPlayer.current = {
@@ -34,7 +63,33 @@ export default function Multiplayer() {
       };
       gameContext.setCurrentPlayer(currentPlayer.current);
     });
-  }, []);
+
+    const handleConnect = () => {
+      if (!isButtonClicked) return;
+      currentPlayer.current = {
+        userName: username,
+        socketId: socket.id,
+        roomId: roomId.current,
+        turn: false,
+        win: false,
+        wantRestart: false,
+        color: "",
+      };
+      gameContext.setBoardList(createBoard(7, 6));
+      socket?.emit("createRoom", currentPlayer.current, createBoard(7, 6));
+      isButtonClickedRef.current = false;
+      setIsButtonClicked(false);
+    };
+
+    socket.on("connect", handleConnect);
+
+    return () => {
+      if (socket) {
+        socket.off("roomJoined");
+        socket.off("connect");
+      }
+    };
+  }, [socket, isButtonClicked]);
 
   useEffect(() => {
     setUsername(generateUsername());
@@ -68,18 +123,7 @@ export default function Multiplayer() {
           type="submit"
           onClick={(e) => {
             e.preventDefault();
-            currentPlayer.current = {
-              userName: username,
-              socketId: socket.id,
-              roomId: roomId.current,
-              turn: false,
-              win: false,
-              wantRestart: false,
-              color: "",
-            };
-            gameContext.setBoardList(createBoard(7, 6));
-            socket.connect();
-            socket.emit("createRoom", currentPlayer.current, createBoard(7, 6));
+            handleSearch();
           }}
           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >

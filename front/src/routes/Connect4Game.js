@@ -2,13 +2,18 @@ import GamePlayersTab from "../components/Connect4Game/GamePlayersTab";
 import Board from "../components/Connect4Game/Board";
 import { useContext, useEffect, useRef } from "react";
 import { Connect4GameContext } from "../context/Connect4GameContext";
-import socket from "../socket";
 
 export default function Connect4Game() {
   const gameContext = useContext(Connect4GameContext);
+  const { socket, connect } = useContext(Connect4GameContext);
+
   const opponent = useRef(null);
 
   useEffect(() => {
+    connect();
+
+    if (!socket) return;
+
     socket.emit("info");
 
     socket.on("info", (data) => {
