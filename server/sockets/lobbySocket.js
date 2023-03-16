@@ -35,7 +35,7 @@ module.exports = (socket, io, rooms, generateId, findRoomById) => {
     socket.join(roomId);
     socket.emit("roomJoined", roomId);
     console.log(`Client ${socket.id} joined room ${roomId}`);
-    console.log(rooms);
+    // console.log(rooms);
 
     if (roomPlayer?.players.length === 2) {
       io.to(roomId).emit("startGame", roomPlayer.players);

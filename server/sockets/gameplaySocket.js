@@ -18,7 +18,6 @@ module.exports = (socket, io, rooms, findRoomById) => {
         //verif si la case est jouable
         if (room.board[colPlayed][i] === 0) {
           room.board[colPlayed][i] = socket.id;
-          console.log(getWinner(colPlayed, i, room.board), player.userName)
 
           const playedCell = {
             column: Number(colPlayed),
@@ -30,20 +29,41 @@ module.exports = (socket, io, rooms, findRoomById) => {
 
           if (getWinner(colPlayed, i, room.board)) {
             room.players[opponentIndex].turn = false;
+            io.to(room?.id).emit("victory", socket.id);
           }
 
           return io
             .to(room?.id)
-            .emit("move", room.board, playedCell, socket.id, room.players, getWinner(colPlayed, i, room.board));
+            .emit(
+              "move",
+              room.board,
+              playedCell,
+              socket.id,
+              room.players,
+              getWinner(colPlayed, i, room.board)
+            );
         }
       }
     }
   });
 
-  socket.on('play-again', () => {
+  socket.on("play-again", (playerWantsToRestartId) => {
     let room = findRoomById(socket.id, rooms);
     // resetBoard();
-    io.to(room?.id).emit('play-again');
+    io.to(room?.id).emit("play-again", playerWantsToRestartId);
+  });
+
+  socket.on("startGame", (board) => {
+    let room = findRoomById(socket.id, rooms);
+    if (board) {
+      room.board = board;
+    }
+    const firstPlayerIndex = Math.random() < 0.5 ? 0 : 1;
+    room.players.forEach((player, index) => {
+      player.turn = index === firstPlayerIndex;
+    });
+
+    io.to(room?.id).emit("startGame", room.players);
   });
 
   socket.on("checkWin", (data) => {
@@ -74,7 +94,7 @@ function getWinner(column, row, board) {
     for (let step = -3; step <= 3; step++) {
       const col = column + step * dx;
       const r = row + step * dy;
-      
+
       // Vérifier si la cellule courante est à l'intérieur du plateau
       // et si elle contient le jeton du même joueur
       if (

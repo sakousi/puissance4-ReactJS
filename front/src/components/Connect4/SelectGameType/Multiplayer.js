@@ -21,7 +21,6 @@ export default function Multiplayer() {
   const currentPlayer = useRef(null);
 
   useEffect(() => {
-    setUsername(generateUsername());
     socket.on("roomJoined", (data) => {
       roomId.current = data;
       currentPlayer.current = {
@@ -35,7 +34,10 @@ export default function Multiplayer() {
       };
       gameContext.setCurrentPlayer(currentPlayer.current);
     });
+  }, []);
 
+  useEffect(() => {
+    setUsername(generateUsername());
     if (
       gameContext.currentPlayer &&
       gameContext.currentPlayer.roomId &&
@@ -43,7 +45,7 @@ export default function Multiplayer() {
     ) {
       navigate("/connect4/1234");
     }
-  }, [gameContext.boardList, roomId, gameContext.currentPlayer]);
+  }, [gameContext.boardList, roomId, gameContext.currentPlayer, navigate]);
 
   return (
     <>
