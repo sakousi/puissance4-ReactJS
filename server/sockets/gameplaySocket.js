@@ -5,7 +5,6 @@ module.exports = (socket, io, rooms, findRoomById) => {
     let room = findRoomById(socket.id, rooms);
     // let player = room.players.find((player) => player.socketId === socket.id);
     // let opponent = room.players.find((player) => player.socketId !== socket.id);
-
     let playerIndex = room.players.findIndex(
       (player) => player.socketId === socket.id
     );
@@ -39,6 +38,12 @@ module.exports = (socket, io, rooms, findRoomById) => {
         }
       }
     }
+  });
+
+  socket.on('play-again', () => {
+    let room = findRoomById(socket.id, rooms);
+    // resetBoard();
+    io.to(room?.id).emit('play-again');
   });
 
   socket.on("checkWin", (data) => {
