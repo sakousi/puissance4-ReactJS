@@ -24,9 +24,18 @@ function createSockets(httpServer) {
     socket.on("disconnect", () => {
       let room = findRoomById(socket.id, rooms);
       if (room) {
-        rooms.splice(room, 1);
+        if (room.players.length === 1) {
+          rooms.splice(rooms.indexOf(room), 1);
+        } else {
+          let otherPlayer = room.players.find(
+            (player) => player.socketId !== socket.id
+          );
+          if (otherPlayer) {
+            io.to(otherPlayer.socketId).emit("opponent-disconnected");
+          }
+          rooms.splice(rooms.indexOf(room), 1);
+        }
       }
-
       console.log(`Client ${socket.id} disconnected`);
     });
   });

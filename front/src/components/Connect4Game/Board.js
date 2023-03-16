@@ -3,6 +3,7 @@ import { Connect4GameContext } from "../../context/Connect4GameContext";
 import { useContext, useEffect, useRef, useState } from "react";
 import socket from "../../socket";
 import { createBoard } from "../../utils/functions";
+import { useNavigate } from "react-router-dom";
 
 export default function Board() {
   const gameContext = useContext(Connect4GameContext);
@@ -16,6 +17,8 @@ export default function Board() {
   const [currentWantsToPlayAgain, setCurrentWantsToPlayAgain] = useState(false);
   const currentWantsRestart = useRef(false);
   const [resetRequested, setResetRequested] = useState(false);
+  const navigate = useNavigate();
+  const [alertMessage, setAlertMessage] = useState(null);
 
   useEffect(() => {
     socket.on("victory", (socketId) => {
@@ -56,9 +59,24 @@ export default function Board() {
         }
       });
     });
+
+    socket.on("opponent-disconnected", () => {
+      setAlertMessage("Your opponent has disconnected.");
+      new Promise((resolve) =>
+        setTimeout(() => {
+          setAlertMessage(null);
+          gameContext.setCurrentPlayer(null);
+          socket.disconnect();
+          resolve();
+        }, 5000)
+      );
+    });
   }, []);
 
   useEffect(() => {
+    if (!gameContext.currentPlayer) {
+      navigate("/connect4");
+    }
     setBoardList(gameContext.boardList);
 
     if (resetRequested) {
@@ -72,10 +90,12 @@ export default function Board() {
 
     setCurrentPlayer(gameContext.currentPlayer);
   }, [
+    alertMessage,
     boardList,
     gameContext,
     gameContext.boardList,
     gameContext.currentPlayer,
+    navigate,
     resetRequested,
   ]);
 
@@ -140,6 +160,11 @@ export default function Board() {
               Leave Game
             </button>
           </div>
+        </div>
+      )}
+      {alertMessage && (
+        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-4 py-2 rounded-md z-50">
+          {alertMessage}
         </div>
       )}
     </section>
