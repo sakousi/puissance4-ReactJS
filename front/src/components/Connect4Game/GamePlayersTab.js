@@ -12,25 +12,36 @@ export default function GamePlayersTab() {
   const { socket, connect } = useContext(Connect4GameContext);
 
   useEffect(() => {
-
     if (!gameContext.currentPlayer && !socket) {
       navigate("/connect4");
     }
-
   }, []);
 
   return (
     <>
       <nav className="bg-white border-gray-200 px-2 sm:px-4 py-2.5 dark:bg-gray-900">
-        <div className="container flex flex-wrap items-center justify-between mx-auto">
-          <div></div>
-          <div className="flex items-center md:order-2">
+        <div className="grid grid-cols-3">
+          <ul className="lg:col-start-2 grid col-span-2 lg:col-span-1 grid-cols-2 p-4 border">
+            <li className="flex flex-row items-center justify-center mx-3 lg:mx-8">
+              <p className="text-white text-center">
+                {currentPlayer?.userName ? currentPlayer.userName : ""}
+              </p>
+              <div className={`${gameContext?.currentPlayer?.color} m-2 h-12 w-12 rounded-full`}></div>
+            </li>
+            <li className="flex flex-row items-center justify-center mx-3 lg:mx-8">
+              <div className={`${gameContext?.opponent?.color} m-2 h-12 w-12 rounded-full`}></div>
+              <p className="text-white text-center">
+                {opponent?.userName ? opponent.userName : ""}
+              </p>
+            </li>
+          </ul>
+          <div className="flex items-center  justify-end">
             <div>
               <ul
-                className="flex flex-col py-2 md:flex-row"
+                className="flex flex-row py-2"
                 aria-labelledby="user-menu-button"
               >
-                <li>
+                <li className="mx-8">
                   <Link
                     onClick={() => {
                       setIsOpen(!isOpen);
@@ -42,23 +53,6 @@ export default function GamePlayersTab() {
                 </li>
               </ul>
             </div>
-          </div>
-          <div
-            className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
-            id="mobile-menu-2"
-          >
-            <ul className="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-              <li>
-                <p className="text-white">
-                  {currentPlayer?.userName ? currentPlayer.userName : ""}
-                </p>
-              </li>
-              <li>
-                <p className="text-white">
-                  {opponent?.userName ? opponent.userName : ""}
-                </p>
-              </li>
-            </ul>
           </div>
         </div>
       </nav>

@@ -25,10 +25,12 @@ export default function Board() {
     if (!socket) return;
 
     socket.on("victory", (socketId, draw) => {
+      console.log(socketId, draw);
       setIsOpen(true);
       if (draw) {
         return setDraw(true);
       } else if (socketId === socket.id) {
+        console.log(socket.id, socketId);
         setVictory(true);
       }
     });
@@ -43,13 +45,8 @@ export default function Board() {
       }
 
       if (currentWantsRestart.current && opponentWantsRestart.current) {
-        setIsOpen(false);
         console.log("reset board");
-        setResetRequested(true);
-        currentWantsRestart.current = false;
-        opponentWantsRestart.current = false;
-        setCurrentWantsToPlayAgain(false);
-        setOpponentWantsToPlayAgain(false);
+        resetGame();
       }
     });
 
@@ -105,6 +102,17 @@ export default function Board() {
     socket,
   ]);
 
+  function resetGame() {
+    setIsOpen(false);
+    setVictory(false);
+    setDraw(false);
+    setCurrentWantsToPlayAgain(false);
+    setOpponentWantsToPlayAgain(false);
+    setResetRequested(true);
+    currentWantsRestart.current = false;
+    opponentWantsRestart.current = false;
+  }
+
   function handlePlayAgain() {
     socket.emit("play-again", socket.id);
   }
@@ -127,16 +135,13 @@ export default function Board() {
         >
           <div className="bg-red-500 bg-yellow-500"></div>
           <div className="relative z-20 text-center bg-white rounded-lg shadow dark:bg-gray-700 px-2 py-4">
-            <svg
-              aria-hidden="true"
-              className="mx-auto mb-4 text-gray-400 w-14 h-14 dark:text-gray-200"
-              fill="none"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-
+            <div className="flex items-center justify-center">
+              <img
+                className=" w-20 h-20 mb-5"
+                src={process.env.PUBLIC_URL + `${draw ? '/images/emblem-important.svg' : victory ? '/images/Checkmark.svg' : '/images/milker_X_icon.svg'} `}
+                alt=""
+              />
+            </div>
             <h3 className=" mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
               {draw ? "DRAW" : victory ? "VICTORY" : "DEFEAT"}
             </h3>
@@ -149,7 +154,7 @@ export default function Board() {
             </h2>
             <button
               type="button"
-              className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
+              className="mx-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               onClick={() => {
                 handlePlayAgain();
               }}
@@ -158,7 +163,7 @@ export default function Board() {
             </button>
             <button
               type="button"
-              className="text-white bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+              className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
               onClick={() => {
                 gameContext.setCurrentPlayer(null);
                 socket.disconnect();

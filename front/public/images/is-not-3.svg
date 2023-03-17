@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:cc="http://web.resource.org/cc/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:svg="http://www.w3.org/2000/svg"
+    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+    xmlns:ns1="http://sozi.baierouge.fr"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    version="1.0"
+    viewBox="0 0 468 468"
+  >
+  <g
+      transform="translate(0 468) scale(0.0936 -0.0936)"
+      fill="#000000"
+    >
+    <path
+        d="m2474 4870c-4-16-10-30-14-30s-11-34-15-75-10-75-15-75c-4 0-10-19-13-42-3-24-11-44-16-46-6-2-11-21-11-43 0-21-4-39-9-39s-13-29-16-65c-4-36-11-65-15-65s-11-25-15-55c-3-30-11-55-16-55s-9-13-9-30c0-16-4-30-9-30s-13-29-16-65c-4-36-11-65-15-65s-11-31-15-70c-4-38-11-70-16-70s-12-18-15-40l-7-40-871-2-871-3-23-22-22-23v-520c0-294 4-520 9-520s11-9 14-20c3-14 14-20 31-20 14 0 26-4 26-10 0-7 242-10 705-10h705v-25c0-14-4-25-10-25-5 0-10-7-10-15s-4-15-9-15-12-27-16-60-10-60-15-60c-4 0-11-34-15-75s-11-75-16-75-9-7-9-15-4-15-10-15c-5 0-10-13-10-30v-30h-645c-423 0-645-3-645-10 0-5-12-10-26-10-17 0-28-6-31-20-3-11-9-20-14-20s-9-226-9-520v-520l22-22 23-23 513-3 513-3-7-47c-4-26-11-50-16-53s-12-25-15-48c-3-22-9-41-13-41s-11-34-15-75-11-75-16-75-9-13-9-29-5-31-11-33-14-27-17-56c-2-29-8-52-12-52-5 0-12-29-15-65-4-36-11-65-16-65s-9-13-9-30c0-16-4-30-9-30s-11-23-13-51c-3-28-10-54-16-58-6-3-14-34-18-69-3-34-11-62-15-62-15 0-10-60 5-76 12-12 111-14 634-14 677 0 632-4 632 56 0 13 4 24 9 24s12 28 16 63c4 34 12 65 18 68 5 4 12 30 15 58 2 28 8 51 13 51s9 14 9 30c0 17 4 30 9 30s12 28 16 63c4 34 12 65 18 68 5 4 12 30 15 58 2 28 8 51 13 51s9 14 9 30c0 17 4 30 9 30 4 0 11 19 14 41 3 23 10 45 15 48s13 39 17 79c4 39 11 72 15 72s11 25 15 55l6 55 872 2 872 3 23 23 22 22v520c0 294-4 520-9 520s-11 9-14 20c-3 14-14 20-31 20-14 0-26 5-26 10 0 7-243 10-707 11-390 0-702 3-695 6 6 2 12 20 12 38s5 35 11 37c5 2 13 22 16 46 3 23 9 42 13 42s11 32 14 70c4 39 11 70 17 70 5 0 9 9 9 20s5 20 10 20c6 0 10 10 10 23 0 12 3 32 6 45l6 22h639c419 0 639 3 639 10 0 6 12 10 26 10 17 0 28 6 31 20 3 11 9 20 14 20s9 226 9 520v520l-22 23-23 22-507 3c-498 2-508 3-508 22 0 11 4 20 9 20s12 27 16 60 10 60 15 60c4 0 10 23 12 52 3 29 11 54 17 56s11 19 11 38 4 34 9 34 13 30 17 68c3 37 11 70 16 73s12 25 15 48c3 22 10 41 14 41 5 0 9 16 9 35s4 35 9 35 13 30 17 68c3 37 11 70 16 73s12 25 15 48c3 22 9 41 13 41 10 0 21 106 14 135l-6 25h-634-634l-6-30z"
+    />
+  </g
+  >
+  <metadata
+    >
+    <rdf:RDF
+      >
+      <cc:Work
+        >
+        <dc:format
+          >image/svg+xml</dc:format
+        >
+        <dc:type
+            rdf:resource="http://purl.org/dc/dcmitype/StillImage"
+        />
+        <cc:license
+            rdf:resource="http://creativecommons.org/licenses/publicdomain/"
+        />
+        <dc:publisher
+          >
+          <cc:Agent
+              rdf:about="http://openclipart.org/"
+            >
+            <dc:title
+              >Openclipart</dc:title
+            >
+          </cc:Agent
+          >
+        </dc:publisher
+        >
+        <dc:title
+          >Not Equal To 3</dc:title
+        >
+        <dc:date
+          >2012-02-06T15:45:36</dc:date
+        >
+        <dc:description
+          >Not Equal To</dc:description
+        >
+        <dc:source
+          >https://openclipart.org/detail/167817/not-equal-to-3-by-dripsandcastle</dc:source
+        >
+        <dc:creator
+          >
+          <cc:Agent
+            >
+            <dc:title
+              >dripsandcastle</dc:title
+            >
+          </cc:Agent
+          >
+        </dc:creator
+        >
+        <dc:subject
+          >
+          <rdf:Bag
+            >
+            <rdf:li
+              >is not</rdf:li
+            >
+            <rdf:li
+              >is not equal</rdf:li
+            >
+            <rdf:li
+              >math</rdf:li
+            >
+            <rdf:li
+              >not equal to</rdf:li
+            >
+          </rdf:Bag
+          >
+        </dc:subject
+        >
+      </cc:Work
+      >
+      <cc:License
+          rdf:about="http://creativecommons.org/licenses/publicdomain/"
+        >
+        <cc:permits
+            rdf:resource="http://creativecommons.org/ns#Reproduction"
+        />
+        <cc:permits
+            rdf:resource="http://creativecommons.org/ns#Distribution"
+        />
+        <cc:permits
+            rdf:resource="http://creativecommons.org/ns#DerivativeWorks"
+        />
+      </cc:License
+      >
+    </rdf:RDF
+    >
+  </metadata
+  >
+</svg
+>

@@ -8,9 +8,9 @@ export default function Connect4Manage() {
   return (
     <>
       <Header></Header>
-      <section className="flex flex-col dark:bg-gray-900 h-screen">
+      <section className="flex flex-col dark:bg-gray-900 min-h-screen">
         <h1 className="text-white text-5xl text-center">Connect 4</h1>
-        <div className="grid grid-cols-4 mx-14 my-8 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 mx-14 my-8 gap-8">
           <Store></Store>
           <GameType></GameType>
           <Leaderboard></Leaderboard>

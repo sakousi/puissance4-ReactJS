@@ -2,7 +2,7 @@
 
 export default function Leaderboard() {
     return (
-      <div className="col-span-1 max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+      <div className="col-span-1 min-w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <div>
           <img
             className="rounded-t-lg"

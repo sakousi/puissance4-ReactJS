@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Connect4GameContext } from "../../context/Connect4GameContext";
 import { createBoard } from "../../utils/functions";
@@ -15,9 +15,13 @@ function resetHtmlBoard(colId) {
 export default function Column(props) {
   const gameContext = useContext(Connect4GameContext);
   const currentPlayer = useRef(null);
-  const navigate = useNavigate();
-  let circles = 6;
   const { socket, connect } = useContext(Connect4GameContext);
+  let circles = 6;
+  const navigate = useNavigate();
+  const colHovered = useRef(false);
+  const lastClicableCell = useRef(null);
+  const lastPlayedCell = useRef(null);
+  const currentBoard = useRef(null);
 
   function handleClick(e) {
     if (!currentPlayer.current) {
@@ -32,6 +36,8 @@ export default function Column(props) {
   useEffect(() => {
     if (!socket) return;
 
+    // currentBoard.current = createBoard(7, 6);
+
     socket.on("move", (board, playedCell, socketId, players, victory) => {
       currentPlayer.current = players.find(
         (player) => player.socketId === socket.id
@@ -42,6 +48,9 @@ export default function Column(props) {
       const casePlayed = document.getElementById(
         `${playedCell.column}-${playedCell.row}`
       );
+      lastPlayedCell.current = casePlayed;
+
+      currentBoard.current = board;
 
       if (socketId === currentPlayer.current.socketId) {
         casePlayed.classList.add(currentPlayer.current.color);
@@ -57,6 +66,7 @@ export default function Column(props) {
     });
 
     socket.on("startGame", (players) => {
+      currentBoard.current = createBoard(7, 6);
       players.forEach((player) => {
         if (player.socketId === socket.id) {
           currentPlayer.current = player;
@@ -86,16 +96,52 @@ export default function Column(props) {
     props.resetRequested,
   ]);
 
+  const handleMouseEnter = useCallback((e) => {
+    if (currentPlayer.current?.turn && !colHovered.current) {
+      for (let i = 0; i < circles; i++) {
+        if (currentBoard.current[props.id][i] === 0) {
+          lastClicableCell.current = document.getElementById(
+            `${props.id}-${i}`
+          );
+          lastClicableCell.current?.classList?.remove("dark:bg-gray-900");
+          lastClicableCell.current?.classList?.add(currentPlayer.current.color);
+          colHovered.current = true;
+          break;
+        }
+      }
+    }
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    if (
+      lastClicableCell.current &&
+      lastClicableCell.current.id &&
+      currentBoard.current[props.id][
+        lastClicableCell?.current?.id?.split("-")[1]
+      ] === 0
+    ) {
+      lastClicableCell.current?.classList.add("dark:bg-gray-900");
+      lastClicableCell.current?.classList.remove(currentPlayer.current.color);
+    }
+    colHovered.current = false;
+  }, []);
+
   return (
     <>
-      <ul id={`row-${props.id}`} onClick={handleClick} className="">
+      <ul
+        id={`row-${props.id}`}
+        onClick={handleClick}
+        className={`${currentPlayer.current?.turn && "hover:bg-gray-500"}`}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
         {Array(circles)
           .fill()
           .map((_, i) => (
             <li
               key={i}
               id={`${props.id}-${circles - 1 - i}`}
-              className="rounded-full m-2 h-14 w-14 dark:bg-gray-900"
+              className="rounded-full min-[100px]:m-1 min-[100px]:h-8 min-[100px]:w-8 min-[375px]:h-10 min-[375px]:w-10 m-2 min-[500px]:h-14 min-[500px]:w-14 dark:bg-gray-900"
             ></li>
           ))}
       </ul>
