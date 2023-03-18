@@ -1,6 +1,7 @@
 const User = require("../../models/User");
 const UserInputType = require("./inputTypes");
-const { GraphQLNonNull, GraphQLString, GraphQLBoolean } = require("graphql");
+const UserType = require("./types");
+const { GraphQLNonNull, GraphQLString, GraphQLBoolean, GraphQLObjectType } = require("graphql");
 const jwt = require("jsonwebtoken");
 const getToken = require("../../middleware/authUser");
 const bcrypt = require("bcryptjs");
@@ -24,7 +25,13 @@ const register = {
 };
 
 const login = {
-  type: GraphQLString,
+  type: new GraphQLObjectType({
+    name: "Login",
+    fields: () => ({
+      token: { type: GraphQLString },
+      user: { type: UserType },
+    }),
+  }),
   description: "Login a user",
   args: {
     email: {
@@ -56,7 +63,7 @@ const login = {
     }
 
     const token = createJwtToken(user);
-    return token;
+    return {token, user};
   },
 };
 

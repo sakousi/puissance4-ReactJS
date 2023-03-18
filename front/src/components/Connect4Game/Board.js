@@ -3,8 +3,12 @@ import { Connect4GameContext } from "../../context/Connect4GameContext";
 import { useContext, useEffect, useRef, useState } from "react";
 import { createBoard } from "../../utils/functions";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "@apollo/client";
+import { LEADERBOARD } from "../../API/userRequest";
+import { AppContext } from "../../context/appContext";
 
 export default function Board() {
+  const appContext = useContext(AppContext);
   const gameContext = useContext(Connect4GameContext);
   const [boardList, setBoardList] = useState(gameContext.boardList);
   const [currentPlayer, setCurrentPlayer] = useState(gameContext.currentPlayer);
@@ -21,16 +25,24 @@ export default function Board() {
   const { socket, connect } = useContext(Connect4GameContext);
   const [draw, setDraw] = useState(false);
 
+  const [Leaderboard] = useMutation(LEADERBOARD);
+
   useEffect(() => {
     if (!socket) return;
 
     socket.on("victory", (socketId, draw) => {
-      console.log(socketId, draw);
       setIsOpen(true);
       if (draw) {
         return setDraw(true);
       } else if (socketId === socket.id) {
-        console.log(socket.id, socketId);
+        Leaderboard({
+          variables: {
+            player: appContext.currentUser?.id,
+            wins: 1,
+            losses: 0,
+            draws: 0,
+          },
+        });
         setVictory(true);
       }
     });
@@ -138,7 +150,16 @@ export default function Board() {
             <div className="flex items-center justify-center">
               <img
                 className=" w-20 h-20 mb-5"
-                src={process.env.PUBLIC_URL + `${draw ? '/images/emblem-important.svg' : victory ? '/images/Checkmark.svg' : '/images/milker_X_icon.svg'} `}
+                src={
+                  process.env.PUBLIC_URL +
+                  `${
+                    draw
+                      ? "/images/emblem-important.svg"
+                      : victory
+                      ? "/images/Checkmark.svg"
+                      : "/images/milker_X_icon.svg"
+                  } `
+                }
                 alt=""
               />
             </div>

@@ -1,6 +1,11 @@
 import { useLazyQuery } from "@apollo/client";
 import { createContext, useState, useEffect } from "react";
-import { createBrowserRouter, RouterProvider, Routes, Route } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Routes,
+  Route,
+} from "react-router-dom";
 import { GET_CURRENT_USER } from "../API/userRequest";
 import App from "../App";
 import Connect4Manage from "../routes/Connect4Manage";
@@ -25,7 +30,7 @@ export function AppProvider() {
 
   useEffect(() => {
     if (token) {
-      getUserById({});
+      getUserById();
     }
   }, []);
 
@@ -62,7 +67,14 @@ export function AppProvider() {
   }
 
   return (
-    <AppContext.Provider value={{ loggedIn, setLoggedIn }}>
+    <AppContext.Provider
+      value={{
+        loggedIn,
+        setLoggedIn,
+        currentUser,
+        setCurrentUser,
+      }}
+    >
       <RouterProvider router={router} />
     </AppContext.Provider>
   );

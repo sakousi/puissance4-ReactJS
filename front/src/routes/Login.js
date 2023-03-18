@@ -16,8 +16,9 @@ export default function Login() {
   const [login] = useMutation(LOGIN, {
     onCompleted(data) {
       appContext.setLoggedIn(true);
+      appContext.setCurrentUser(data.login.user);
       if (rememberMe) {
-        localStorage.setItem("token", data.login);
+        localStorage.setItem("token", data.login.token);      
       }
       navigate("/");
     },

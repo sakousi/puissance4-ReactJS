@@ -19,7 +19,10 @@ const getUserById = {
     if (!userId) {
       userId = jwt.decode(getToken(context.headers), process.env.JWT_SECRET)?.user?._id;
     }
-    return await User.findOne({ id: userId });
+
+    if (userId) {
+      return await User.findOne({ _id: userId });
+    }
   },
 };
 

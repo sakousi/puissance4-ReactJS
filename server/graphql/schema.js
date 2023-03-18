@@ -3,10 +3,12 @@ const { GraphQLSchema, GraphQLObjectType } = require("graphql");
 
 // Import the queries
 const { getUserById, getUserByEmail, getAllUsers } = require("./User/queries");
+const { getAllLeaderboards, getLeaderboardByUserId, getLeaderboardById} = require("./Leaderboard/queries");
 
 // Import the mutations
 const { updateUser } = require("./User/mutations");
 const { register, login } = require("./User/authMutations");
+const { createLeaderboard, updateLeaderboard } = require("./Leaderboard/mutations");
 
 // Define the query type
 const QueryType = new GraphQLObjectType({
@@ -16,6 +18,9 @@ const QueryType = new GraphQLObjectType({
     getUserById,
     getUserByEmail,
     getAllUsers,
+    getAllLeaderboards,
+    getLeaderboardByUserId,
+    getLeaderboardById,
   },
 });
 
@@ -27,6 +32,8 @@ const MutationType = new GraphQLObjectType({
     updateUser,
     register,
     login,
+    createLeaderboard,
+    updateLeaderboard,
   },
 });
 

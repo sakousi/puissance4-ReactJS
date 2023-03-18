@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Connect4GameContext } from "../../../context/Connect4GameContext";
 import { useContext, useEffect, useRef, useState } from "react";
 import { updateCurrentPlayer, createBoard } from "../../../utils/functions";
-import Connect4Game from "../../../routes/Connect4Game";
+import { AppContext } from "../../../context/appContext";
 
 function randomId() {
   return Math.floor(Math.random() * (999 - 100 + 1) + 100);
@@ -22,9 +22,9 @@ export default function Multiplayer() {
   const currentPlayer = useRef(null);
   const [isButtonClicked, setIsButtonClicked] = useState(false);
   const isButtonClickedRef = useRef(false);
+  const appContext = useContext(AppContext);
 
   const handleSearch = () => {
-    console.log("handleSearch");
     isButtonClickedRef.current = true;
     setIsButtonClicked(true);
     if (!socket) {
@@ -42,7 +42,7 @@ export default function Multiplayer() {
       gameContext.setBoardList(createBoard(7, 6));
       socket?.emit("createRoom", currentPlayer.current, createBoard(7, 6));
     } else {
-      socket.connect()
+      socket.connect();
     }
     gameContext.setBoardList(createBoard(7, 6));
   };
@@ -92,7 +92,8 @@ export default function Multiplayer() {
   }, [socket, isButtonClicked]);
 
   useEffect(() => {
-    setUsername(generateUsername());
+    setUsername(appContext.currentUser?.username || generateUsername());
+
     if (
       gameContext.currentPlayer &&
       gameContext.currentPlayer.roomId &&
@@ -100,7 +101,13 @@ export default function Multiplayer() {
     ) {
       navigate("/connect4/1234");
     }
-  }, [gameContext.boardList, roomId, gameContext.currentPlayer, navigate]);
+  }, [
+    gameContext.boardList,
+    roomId,
+    gameContext.currentPlayer,
+    navigate,
+    appContext.currentUser,
+  ]);
 
   return (
     <>

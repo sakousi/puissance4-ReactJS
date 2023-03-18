@@ -38,7 +38,15 @@ export const REGISTER = gql`
 
 export const LOGIN = gql`
   mutation Login($email: String!, $password: String!) {
-    login(email: $email, password: $password) 
+    login(email: $email, password: $password) {
+      token
+      user {
+        id
+        username
+        email
+        lastConnexion
+      }
+    }
   }
 `;
 
@@ -84,5 +92,21 @@ export const GET_ALL_USERS = gql`
       email
       password
     }
+  }
+`;
+
+export const LEADERBOARD = gql`
+  mutation UpdateLeaderboard(
+    $player: ID!
+    $wins: Int!
+    $losses: Int!
+    $draws: Int!
+  ) {
+    updateLeaderboard(
+      player: $player
+      wins: $wins
+      losses: $losses
+      draws: $draws
+    )
   }
 `;
