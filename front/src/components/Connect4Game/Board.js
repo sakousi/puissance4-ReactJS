@@ -27,23 +27,31 @@ export default function Board() {
 
   const [Leaderboard] = useMutation(LEADERBOARD);
 
+  const updateLeaderboard = (wins, losses, draws) => {
+    Leaderboard({
+      variables: {
+        player: appContext.currentUser?.id,
+        wins,
+        losses,
+        draws,
+      },
+    });
+  };
+
   useEffect(() => {
     if (!socket) return;
 
     socket.on("victory", (socketId, draw) => {
+      console.log("victory")
       setIsOpen(true);
       if (draw) {
-        return setDraw(true);
+        updateLeaderboard(0, 0, 1);
+        setDraw(true);
       } else if (socketId === socket.id) {
-        Leaderboard({
-          variables: {
-            player: appContext.currentUser?.id,
-            wins: 1,
-            losses: 0,
-            draws: 0,
-          },
-        });
+        updateLeaderboard(1, 0, 0);
         setVictory(true);
+      } else {
+        updateLeaderboard(0, 1, 0);
       }
     });
 
