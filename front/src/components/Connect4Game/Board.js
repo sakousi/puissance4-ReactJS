@@ -42,7 +42,7 @@ export default function Board() {
     if (!socket) return;
 
     socket.on("victory", (socketId, draw) => {
-      console.log("victory")
+      console.log("victory");
       setIsOpen(true);
       if (draw) {
         updateLeaderboard(0, 0, 1);
@@ -66,7 +66,6 @@ export default function Board() {
 
       if (currentWantsRestart.current && opponentWantsRestart.current) {
         console.log("reset board");
-        resetGame();
       }
     });
 
@@ -106,6 +105,7 @@ export default function Board() {
       gameContext.setBoardList(board);
 
       socket.emit("startGame", board);
+      resetGame();
 
       setResetRequested(false);
     }
