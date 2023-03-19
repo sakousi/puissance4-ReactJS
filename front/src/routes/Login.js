@@ -41,7 +41,7 @@ export default function Login() {
           }}
         >
           <div className="mb-6">
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            <label className="block mb-2 text-lg font-medium text-gray-900 dark:text-white">
               Email address
             </label>
             <input
@@ -55,7 +55,7 @@ export default function Login() {
             ></input>
           </div>
           <div className="mb-6">
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            <label className="block mb-2 text-lg font-medium text-gray-900 dark:text-white">
               Password
             </label>
             <input
@@ -78,7 +78,7 @@ export default function Login() {
                 className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800"
               ></input>
             </div>
-            <label className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+            <label className="ml-2 text-lg font-medium text-gray-900 dark:text-gray-300">
               Remember me
             </label>
           </div>
@@ -89,7 +89,7 @@ export default function Login() {
             Submit
           </button>
         </form>
-        <Link to={"/register"} className="text-white my-6">
+        <Link to={"/register"} className="text-white text-lg my-6">
           Create an account
         </Link>
       </section>

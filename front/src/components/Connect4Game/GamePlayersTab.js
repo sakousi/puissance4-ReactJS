@@ -23,14 +23,14 @@ export default function GamePlayersTab() {
         <div className="grid grid-cols-3">
           <ul className="lg:col-start-2 grid col-span-2 lg:col-span-1 grid-cols-2 p-4 border">
             <li className="flex flex-row items-center justify-center mx-3 lg:mx-8">
-              <p className="text-white text-center">
+              <p className="text-white text-2xl text-center">
                 {currentPlayer?.userName ? currentPlayer.userName : ""}
               </p>
-              <div className={`${gameContext?.currentPlayer?.color} m-2 h-12 w-12 rounded-full`}></div>
+              <div className={`${gameContext?.currentPlayer?.color} m-2 h-16 w-16 rounded-full`}></div>
             </li>
             <li className="flex flex-row items-center justify-center mx-3 lg:mx-8">
-              <div className={`${gameContext?.opponent?.color} m-2 h-12 w-12 rounded-full`}></div>
-              <p className="text-white text-center">
+              <div className={`${gameContext?.opponent?.color} m-2 h-16 w-16 rounded-full`}></div>
+              <p className="text-white text-2xl text-center">
                 {opponent?.userName ? opponent.userName : ""}
               </p>
             </li>
@@ -46,7 +46,7 @@ export default function GamePlayersTab() {
                     onClick={() => {
                       setIsOpen(!isOpen);
                     }}
-                    className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-lg px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                   >
                     Leave Game
                   </Link>
@@ -71,12 +71,12 @@ export default function GamePlayersTab() {
             >
               <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
-            <h3 className=" mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+            <h3 className=" mb-5 text-xl font-normal text-gray-500 dark:text-gray-400">
               Are you sure you want to delete this product?
             </h3>
             <button
               type="button"
-              className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
+              className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-lg inline-flex items-center px-5 py-2.5 text-center mr-2"
               onClick={() => {
                 gameContext.setCurrentPlayer(null);
                 socket.disconnect();
