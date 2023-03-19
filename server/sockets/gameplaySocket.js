@@ -1,9 +1,19 @@
 // gameplaySocket.js
 
-module.exports = (socket, io, rooms, findRoomById) => {
+module.exports = (
+  socket,
+  io,
+  rooms,
+  customRooms,
+  findRoomById,
+  findCustomRoomById
+) => {
   socket.on("move", (colPlayed) => {
-    let room = findRoomById(socket.id, rooms);
-
+    let room;
+    room = findRoomById(socket.id, rooms);
+    if (!room) {
+      room = findCustomRoomById(socket.id, customRooms);
+    }
     let playerIndex = room.players.findIndex(
       (player) => player.socketId === socket.id
     );
@@ -54,13 +64,20 @@ module.exports = (socket, io, rooms, findRoomById) => {
   });
 
   socket.on("play-again", (playerWantsToRestartId) => {
-    let room = findRoomById(socket.id, rooms);
-    // resetBoard();
+    let room;
+    room = findRoomById(socket.id, rooms);
+    if (!room) {
+      room = findCustomRoomById(socket.id, customRooms);
+    }
     io.to(room?.id).emit("play-again", playerWantsToRestartId);
   });
 
   socket.on("startGame", (board) => {
-    let room = findRoomById(socket.id, rooms);
+    let room;
+    room = findRoomById(socket.id, rooms);
+    if (!room) {
+      room = findCustomRoomById(socket.id, customRooms);
+    }
     if (board) {
       room.board = board;
       room.cellsPlayed = 0;

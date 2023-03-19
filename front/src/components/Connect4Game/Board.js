@@ -99,6 +99,7 @@ export default function Board() {
 
     return () => {
       clearTimeout(timeout.current);
+      gameContext.setModaleRoomOpen(false);
     };
   }, []);
 

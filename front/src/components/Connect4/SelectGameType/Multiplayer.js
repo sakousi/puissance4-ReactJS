@@ -40,7 +40,7 @@ export default function Multiplayer() {
         color: "",
       };
       gameContext.setBoardList(createBoard(7, 6));
-      socket?.emit("createRoom", currentPlayer.current, createBoard(7, 6));
+      socket.emit("createRoom", currentPlayer.current, createBoard(7, 6), 'matchmaking');
     } else {
       socket.connect();
     }
@@ -76,7 +76,7 @@ export default function Multiplayer() {
         color: "",
       };
       gameContext.setBoardList(createBoard(7, 6));
-      socket?.emit("createRoom", currentPlayer.current, createBoard(7, 6));
+      socket?.emit("createRoom", currentPlayer.current, createBoard(7, 6), 'matchmaking');
       isButtonClickedRef.current = false;
       setIsButtonClicked(false);
     };
