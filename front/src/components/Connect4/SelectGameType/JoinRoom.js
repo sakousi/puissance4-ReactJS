@@ -109,34 +109,52 @@ export default function JoinRoom() {
             Create Room
           </button>
         </div>
-        <div className=" row-span-3 flex flex-col min-w-full items-center">
-          <div className="flex items-start">
-            <h2 className="text-white text-3xl">Rooms</h2>
-          </div>
-          <ul className="flex flex-col min-w-full my-3">
-            {listRooms
-              .filter((room) => room.players?.length === 1)
-              .map((room) => (
-                <li
-                  key={room.id}
-                  className="flex items-center justify-between bg-gray-900 rounded-3xl px-5 py-2.5 my-1.5 mx-3"
-                >
-                  <div className="flex flex-row items-center">
-                    <p className="text-white">{room.players[0].userName}</p>
-                  </div>
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      joinCustomRoom(room.id);
-                    }}
-                    className="text-white h-fit bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full w-auto px-3 py-0.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        {listRooms?.length > 0 ? (
+          <div className=" row-span-3 flex flex-col relative min-w-full items-center">
+            <div className="flex items-start">
+              <h2 className="text-white text-3xl">Rooms</h2>
+            </div>
+            <button
+              onClick={() => socket.emit("listCustomRooms")}
+              className="absolute text-white right-[2%] top-[1%] h-fit bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-auto px-3 py-1.5 text-center"
+            >
+              Refresh
+            </button>
+            <ul className="flex flex-col min-w-full my-3">
+              {listRooms
+                .filter((room) => room.players?.length === 1)
+                .map((room) => (
+                  <li
+                    key={room.id}
+                    className="flex items-center justify-between bg-gray-900 rounded-3xl px-5 py-2.5 my-1.5 mx-3"
                   >
-                    Rejoindre
-                  </button>
-                </li>
-              ))}
-          </ul>
-        </div>
+                    <div className="flex flex-row items-center">
+                      <p className="text-white">{room.players[0].userName}</p>
+                    </div>
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        joinCustomRoom(room.id);
+                      }}
+                      className="text-white h-fit bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full w-auto px-3 py-0.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    >
+                      Rejoindre
+                    </button>
+                  </li>
+                ))}
+            </ul>
+          </div>
+        ) : (
+          <div className="flex flex-col relative items-center justify-center row-span-3">
+            <button
+              onClick={() => socket.emit("listCustomRooms")}
+              className="absolute text-white right-[10%] top-[10%] h-fit bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-auto px-3 py-1.5 text-center"
+            >
+              Refresh
+            </button>
+            <p className="text-white text-2xl">No rooms available</p>
+          </div>
+        )}
       </div>
       {gameContext.modaleRoomOpen && <CreateRoom></CreateRoom>}
     </>
