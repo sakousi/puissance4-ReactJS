@@ -17,7 +17,7 @@ export default function GameType() {
 
   return (
     <div className="row-start-1 lg:col-start-2 lg:col-span-2 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 min-w-full">
-      <ul className="flex text-sm font-medium text-center text-gray-500 divide-x divide-gray-200 rounded-lg dark:divide-gray-600 dark:text-gray-400">
+      <ul className="flex flex-col sm:flex-row text-sm font-medium text-center text-gray-500 divide-x divide-gray-200 rounded-lg dark:divide-gray-600 dark:text-gray-400">
         {["Multiplayer", "Room"].map((item, index) => {
           return (
             <li key={index} className="w-full">
@@ -37,7 +37,7 @@ export default function GameType() {
           );
         })}
       </ul>
-      <div className="flex min-h-[80%] justify-center items-center">
+      <div className="flex h-auto justify-center items-center">
         {activeTab === 0 ? <Multiplayer></Multiplayer> : <JoinRoom></JoinRoom>}
       </div>
     </div>

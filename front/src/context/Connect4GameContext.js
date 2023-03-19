@@ -13,7 +13,7 @@ export default function Connect4GameProvider({ children }) {
   const [boardList, setBoardList] = useState([]);
   const [currentPlayer, setCurrentPlayer] = useState(null);
   const [opponent, setOpponent] = useState(null);
-
+  const [modaleRoomOpen, setModaleRoomOpen] = useState(false);
   const [socket, setSocket] = useState(null);
   const [connected, setConnected] = useState(false);
 
@@ -44,6 +44,8 @@ export default function Connect4GameProvider({ children }) {
         setOpponent,
         socket,
         connect,
+        modaleRoomOpen,
+        setModaleRoomOpen,
       }}
     >
       {children}
