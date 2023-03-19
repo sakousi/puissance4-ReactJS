@@ -98,15 +98,30 @@ export const GET_ALL_USERS = gql`
 export const LEADERBOARD = gql`
   mutation UpdateLeaderboard(
     $player: ID!
+    $username: String!
     $wins: Int!
     $losses: Int!
     $draws: Int!
   ) {
     updateLeaderboard(
       player: $player
+      username: $username
       wins: $wins
       losses: $losses
       draws: $draws
     )
+  }
+`;
+
+export const GET_ALL_LEADERBOARDS = gql`
+  query GetAllLeaderboards {
+    getAllLeaderboards {
+      id
+      player
+      username
+      wins
+      losses
+      draws
+    }
   }
 `;

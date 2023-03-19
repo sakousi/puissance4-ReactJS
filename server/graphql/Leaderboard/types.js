@@ -8,6 +8,7 @@ const leaderboardType = new GraphQLObjectType({
     fields: () => ({
         id: { type: GraphQLID },
         player: { type: GraphQLID },
+        username: { type: GraphQLString },
         wins: { type: GraphQLInt },
         losses: { type: GraphQLInt },
         draws: { type: GraphQLInt },

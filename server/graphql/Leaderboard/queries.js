@@ -1,4 +1,4 @@
-const Leaderboard = require("../../models");
+const Leaderboard = require("../../models/Leaderboard");
 const leaderboardType = require("./types");
 
 const {
@@ -39,7 +39,7 @@ const getAllLeaderboards = {
   type: new GraphQLList(leaderboardType),
   description: "Get all leaderboards",
   async resolve() {
-    return await Leaderboard.find({});
+    return await Leaderboard.find({}).sort({ wins: -1 }).limit(20);
   },
 };
 

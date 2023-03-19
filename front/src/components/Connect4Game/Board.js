@@ -24,13 +24,16 @@ export default function Board() {
   const [alertMessage, setAlertMessage] = useState(null);
   const { socket, connect } = useContext(Connect4GameContext);
   const [draw, setDraw] = useState(false);
+  const timeout = useRef(null);
 
   const [Leaderboard] = useMutation(LEADERBOARD);
 
   const updateLeaderboard = (wins, losses, draws) => {
+    if (!appContext.currentUser) return;
     Leaderboard({
       variables: {
         player: appContext.currentUser?.id,
+        username: appContext.currentUser?.username,
         wins,
         losses,
         draws,
@@ -42,7 +45,6 @@ export default function Board() {
     if (!socket) return;
 
     socket.on("victory", (socketId, draw) => {
-      console.log("victory");
       setIsOpen(true);
       if (draw) {
         updateLeaderboard(0, 0, 1);
@@ -66,6 +68,7 @@ export default function Board() {
 
       if (currentWantsRestart.current && opponentWantsRestart.current) {
         console.log("reset board");
+        resetGame();
       }
     });
 
@@ -83,15 +86,20 @@ export default function Board() {
 
     socket.on("opponent-disconnected", () => {
       setAlertMessage("Your opponent has disconnected.");
-      new Promise((resolve) =>
-        setTimeout(() => {
-          setAlertMessage(null);
-          gameContext.setCurrentPlayer(null);
-          socket.disconnect();
-          resolve();
-        }, 5000)
+      socket.disconnect();
+      new Promise(
+        (resolve) =>
+          (timeout.current = setTimeout(() => {
+            setAlertMessage(null);
+            gameContext.setCurrentPlayer(null);
+            resolve();
+          }, 5000))
       );
     });
+
+    return () => {
+      clearTimeout(timeout.current);
+    };
   }, []);
 
   useEffect(() => {
@@ -105,7 +113,6 @@ export default function Board() {
       gameContext.setBoardList(board);
 
       socket.emit("startGame", board);
-      resetGame();
 
       setResetRequested(false);
     }

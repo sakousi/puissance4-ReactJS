@@ -33,6 +33,9 @@ const updateLeaderboard = {
     player: {
       type: new GraphQLNonNull(GraphQLID),
     },
+    username: {
+      type: GraphQLString,
+    },
     wins: {
       type: GraphQLInt,
     },
@@ -44,7 +47,7 @@ const updateLeaderboard = {
     },
   },
   resolve: async (parent, args, context) => {
-    const { player, wins, losses, draws } = args;
+    const { player, username, wins, losses, draws } = args;
     const leaderboard = await Leaderboard.findOne({ player: player });
 
     if (!leaderboard) {

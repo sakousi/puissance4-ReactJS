@@ -5,6 +5,9 @@ const leaderboardSchema = new mongoose.Schema({
   player: {
     type: mongoose.Types.ObjectId,
   },
+  username: {
+    type: String,
+  },
   wins: {
     type: Number,
   },
