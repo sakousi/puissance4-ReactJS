@@ -17,11 +17,11 @@ export default function Header() {
   return (
     <nav className="bg-white border-gray-200 px-2 sm:px-4 py-2.5 dark:bg-gray-900">
       <div className="container flex flex-wrap items-center justify-between mx-auto">
-        <Link to={"/"} className="flex items-center">
+        <Link to={"/"} className="flex items-center ">
           <img
-            src="https://flowbite.com/docs/images/logo.svg"
-            className="h-6 mr-3 sm:h-9"
-            alt="Flowbite Logo"
+            src={`${process.env.PUBLIC_URL}/images/dauphin.jpg`}
+            className="h-12 w-12 sm:h-16 sm:w-16 mx-4 rounded-full"
+            alt="dauphin Logo"
           />
           <span className="self-center text-3xl font-semibold whitespace-nowrap dark:text-white">
             MellahGames

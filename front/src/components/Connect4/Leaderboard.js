@@ -16,10 +16,10 @@ export default function Leaderboard() {
           <div className="overflow-auto max-h-96">
             <div className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
               <div className="grid grid-cols-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-200">
-                <div className="px-6 font-extrabold text-white text-xl my-4">
+                <div className="px-6 font-extrabold text-white text-md lg:text-lg my-4">
                   Username
                 </div>
-                <div className="font-extrabold text-white text-xl my-4 text-center">
+                <div className="font-extrabold text-white text-md lg:text-lg my-4 text-center">
                   Score
                 </div>
               </div>
