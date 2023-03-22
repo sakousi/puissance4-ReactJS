@@ -67,7 +67,6 @@ export default function Board() {
       }
 
       if (currentWantsRestart.current && opponentWantsRestart.current) {
-        console.log("reset board");
         resetGame();
       }
     });

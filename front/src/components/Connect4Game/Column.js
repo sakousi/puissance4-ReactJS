@@ -20,7 +20,6 @@ export default function Column(props) {
   const navigate = useNavigate();
   const colHovered = useRef(false);
   const lastClicableCell = useRef(null);
-  const lastPlayedCell = useRef(null);
   const currentBoard = useRef(null);
 
   function handleClick(e) {
@@ -36,32 +35,23 @@ export default function Column(props) {
   useEffect(() => {
     if (!socket) return;
 
-    // currentBoard.current = createBoard(7, 6);
-
-    socket.on("move", (board, playedCell, socketId, players, victory) => {
+    socket.on("move", (board, playedCell, socketId, players) => {
       currentPlayer.current = players.find(
         (player) => player.socketId === socket.id
       );
       const opponent = players.find((player) => player.socketId !== socket.id);
-      gameContext.setBoardList(board);
-
       const casePlayed = document.getElementById(
         `${playedCell.column}-${playedCell.row}`
       );
-      lastPlayedCell.current = casePlayed;
-
+      gameContext.setBoardList(board);
       currentBoard.current = board;
 
       if (socketId === currentPlayer.current.socketId) {
         casePlayed.classList.add(currentPlayer.current.color);
-        casePlayed.classList.remove("dark:bg-gray-900");
-        gameContext.setCurrentPlayer(currentPlayer.current);
+        casePlayed.classList.remove("bg-gray-900");
       } else {
         casePlayed.classList.add(opponent.color);
-        casePlayed.classList.remove("dark:bg-gray-900");
-        if (opponent) {
-          gameContext.setOpponent(opponent);
-        }
+        casePlayed.classList.remove("bg-gray-900");
       }
     });
 
@@ -103,7 +93,7 @@ export default function Column(props) {
           lastClicableCell.current = document.getElementById(
             `${props.id}-${i}`
           );
-          lastClicableCell.current?.classList?.remove("dark:bg-gray-900");
+          lastClicableCell.current?.classList?.remove("bg-gray-900");
           lastClicableCell.current?.classList?.add(currentPlayer.current.color);
           colHovered.current = true;
           break;
@@ -120,7 +110,7 @@ export default function Column(props) {
         lastClicableCell?.current?.id?.split("-")[1]
       ] === 0
     ) {
-      lastClicableCell.current?.classList.add("dark:bg-gray-900");
+      lastClicableCell.current?.classList.add("bg-gray-900");
       lastClicableCell.current?.classList.remove(currentPlayer.current.color);
     }
     colHovered.current = false;
@@ -141,7 +131,7 @@ export default function Column(props) {
             <li
               key={i}
               id={`${props.id}-${circles - 1 - i}`}
-              className="rounded-full min-[100px]:m-1 min-[100px]:h-8 min-[100px]:w-8 min-[375px]:h-10 min-[375px]:w-10 m-2 min-[500px]:h-20 min-[500px]:w-20 dark:bg-gray-900"
+              className="rounded-full min-[100px]:m-1 min-[100px]:h-8 min-[100px]:w-8 min-[375px]:h-10 min-[375px]:w-10 m-2 min-[500px]:h-20 min-[500px]:w-20 bg-gray-900"
             ></li>
           ))}
       </ul>

@@ -7,7 +7,7 @@ export default function GameOne() {
       <Link to='/connect4'>
         <img
           className="rounded-t-lg"
-          src={process.env.PUBLIC_URL + "/images/puissance4.webp"}
+          src={process.env.PUBLIC_URL + "/images/gamePlay.png"}
           alt=""
         />
       </Link>

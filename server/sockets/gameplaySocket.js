@@ -24,7 +24,6 @@ module.exports = (
 
     if (room.board && player.turn) {
       for (let i = 0; i < room?.board[colPlayed]?.length; i++) {
-        //verif si la case est jouable
         if (room.board[colPlayed][i] === 0) {
           room.board[colPlayed][i] = socket.id;
 
@@ -50,14 +49,7 @@ module.exports = (
 
           return io
             .to(room?.id)
-            .emit(
-              "move",
-              room.board,
-              playedCell,
-              socket.id,
-              room.players,
-              getWinner(colPlayed, i, room.board)
-            );
+            .emit("move", room.board, playedCell, socket.id, room.players);
         }
       }
     }
