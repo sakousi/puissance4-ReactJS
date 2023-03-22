@@ -65,9 +65,10 @@ export default function JoinRoom() {
 
   useEffect(() => {
     return () => {
-      if (!modaleOpen.current && !gameContext.modaleRoomOpen) {
-        socket?.disconnect();
-      }
+      //TODO : fix disconnect socket when leave joinRoom
+      // if (!modaleOpen.current && !gameContext.modaleRoomOpen) {
+      //   socket?.disconnect();
+      // }
     };
   }, [gameContext.modaleRoomOpen, socket]);
 
