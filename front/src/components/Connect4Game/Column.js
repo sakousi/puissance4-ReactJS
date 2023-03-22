@@ -8,7 +8,7 @@ function resetHtmlBoard(colId) {
   const lis = ul.querySelectorAll("li");
   lis.forEach((li) => {
     li.classList.remove("bg-red-500", "bg-yellow-500");
-    li.classList.add("dark:bg-gray-900");
+    li.classList.add("bg-gray-900");
   });
 }
 
