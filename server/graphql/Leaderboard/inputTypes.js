@@ -7,7 +7,7 @@ const {
   
   const leaderboardInputType = new GraphQLInputObjectType({
     name: "leaderboarInput",
-    description: "leaderboar input type",
+    description: "leaderboard input type",
     fields: () => ({
       id: { type: GraphQLID },
       player: { type: GraphQLID },
@@ -15,6 +15,7 @@ const {
       wins: { type: GraphQLInt },
       losses: { type: GraphQLInt },
       draws: { type: GraphQLInt },
+      elo: { type: GraphQLInt },
     }),
   });
   

@@ -37,6 +37,7 @@ export default function CreateRoom() {
         win: false,
         wantRestart: false,
         color: "",
+        elo: 1000
       };
       gameContext.setBoardList(createBoard(7, 6));
       socket.emit(
@@ -64,6 +65,7 @@ export default function CreateRoom() {
         win: false,
         wantRestart: false,
         color: "",
+        elo: 1000
       };
       gameContext.setCurrentPlayer(currentPlayer.current);
     });
@@ -78,6 +80,8 @@ export default function CreateRoom() {
         win: false,
         wantRestart: false,
         color: "",
+        elo: 1000
+
       };
       gameContext.setBoardList(createBoard(7, 6));
       socket?.emit(

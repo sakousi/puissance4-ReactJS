@@ -25,7 +25,6 @@ export default function Board() {
   const { socket, connect } = useContext(Connect4GameContext);
   const [draw, setDraw] = useState(false);
   const timeout = useRef(null);
-
   const [Leaderboard] = useMutation(LEADERBOARD);
 
   const updateLeaderboard = (wins, losses, draws) => {
@@ -47,13 +46,13 @@ export default function Board() {
     socket.on("victory", (socketId, draw) => {
       setIsOpen(true);
       if (draw) {
-        updateLeaderboard(0, 0, 1);
+        // updateLeaderboard(0, 0, 1);
         setDraw(true);
       } else if (socketId === socket.id) {
-        updateLeaderboard(1, 0, 0);
+        // updateLeaderboard(1, 0, 0);
         setVictory(true);
       } else {
-        updateLeaderboard(0, 1, 0);
+        // updateLeaderboard(0, 1, 0);
       }
     });
 

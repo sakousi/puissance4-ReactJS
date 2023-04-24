@@ -1,5 +1,9 @@
 // lobbySocket.js
 // const {  findRoomById } = require("./index");
+const {
+  createLeaderboardData,
+} = require("../graphql/Leaderboard/mutations.js");
+// const getLeaderboardByUserId = require("../graphql/Leaderboard/queries.js");
 
 module.exports = (socket, io, rooms, customRooms, generateId, findRoomById) => {
   socket.on("createRoom", (currentPlayer, board, type) => {
@@ -46,6 +50,7 @@ module.exports = (socket, io, rooms, customRooms, generateId, findRoomById) => {
     socket.emit("roomJoined", roomId);
     console.log(`Client ${socket.id} joined room ${roomId}`);
     if (roomPlayer?.players.length === 2) {
+      setLeaderboard(roomPlayer);
       io.to(roomId).emit("startGame", roomPlayer.players);
     }
   });
@@ -74,3 +79,20 @@ module.exports = (socket, io, rooms, customRooms, generateId, findRoomById) => {
     io.to(room?.id).emit("info", room?.players);
   });
 };
+
+async function setLeaderboard(room) {
+  room.players.forEach((player) => {
+    if (player.id) {
+      console.log(player);
+      createLeaderboardData({
+        id: "",
+        player: player.id,
+        username: player.userName,
+        wins: 0,
+        losses: 0,
+        draws: 0,
+        elo: 1000,
+      });
+    }
+  });
+}

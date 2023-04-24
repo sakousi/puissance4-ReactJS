@@ -11,6 +11,7 @@ exports.connectDB = async () => {
     await mongoose.connect(localUri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      dbName: "connect4",
     });
     console.log("MongoDB connected", localUri);
   } catch (err) {

@@ -18,13 +18,19 @@ const createLeaderboard = {
     },
   },
   resolve: async (parent, args) => {
-    const leaderboard = new Leaderboard({
-      ...args?.input,
-    });
-    const result = await leaderboard.save();
-    return result.ok;
+    return await createLeaderboardData(args?.input);
   },
 };
+
+async function createLeaderboardData(args) {
+  const leaderboard = await Leaderboard.findOne({ player: args.player });
+
+  if (!leaderboard) {
+    const newLeaderboard = new Leaderboard({ ...args });
+    const result = await newLeaderboard.save();
+    return result.ok;
+  }
+}
 
 const updateLeaderboard = {
   type: GraphQLBoolean,
@@ -45,36 +51,48 @@ const updateLeaderboard = {
     draws: {
       type: GraphQLInt,
     },
+    elo: {
+      type: GraphQLInt,
+    },
   },
   resolve: async (parent, args, context) => {
-    const { player, username, wins, losses, draws } = args;
-    const leaderboard = await Leaderboard.findOne({ player: player });
-
-    if (!leaderboard) {
-      const newLeaderboard = new Leaderboard({ ...args });
-      const result = await newLeaderboard.save();
-      return result.ok;
-    }
-
-    try {
-      await Leaderboard.updateOne(
-        { _id: leaderboard._id },
-        {
-          $set: {
-            wins: (leaderboard.wins += wins),
-            losses: (leaderboard.losses += losses),
-            draws: (leaderboard.draws += draws),
-          },
-        }
-      );
-    } catch (error) {
-      console.log(error);
-    }
-
-    const result = await leaderboard.save();
-
-    return result.ok;
+    return updateLeaderboardData(args);
   },
 };
 
-module.exports = { createLeaderboard, updateLeaderboard };
+async function updateLeaderboardData(args) {
+  const { player, username, wins, losses, draws, elo } = args;
+  const leaderboard = await Leaderboard.findOne({ player: player });
+
+  if (!leaderboard) {
+    const newLeaderboard = new Leaderboard({ ...args });
+    const result = await newLeaderboard.save();
+    return result.ok;
+  }
+  try {
+    await Leaderboard.updateOne(
+      { _id: leaderboard._id },
+      {
+        $set: {
+          wins: (leaderboard.wins += wins),
+          losses: (leaderboard.losses += losses),
+          draws: (leaderboard.draws += draws),
+          elo: (leaderboard.elo = elo),
+        },
+      }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+
+  const result = await leaderboard.save();
+
+  return result.ok;
+}
+
+module.exports = {
+  createLeaderboard,
+  updateLeaderboard,
+  updateLeaderboardData,
+  createLeaderboardData,
+};

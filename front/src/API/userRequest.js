@@ -45,6 +45,7 @@ export const LOGIN = gql`
         username
         email
         lastConnexion
+        elo
       }
     }
   }
@@ -64,7 +65,6 @@ export const GET_USER_BY_EMAIL = gql`
 export const GET_USER_BY_ID = gql`
   query GetUserById($id: ID!) {
     getUserById(id: $id) {
-      id
       username
       email
       password
@@ -78,8 +78,7 @@ export const GET_CURRENT_USER = gql`
       id
       username
       email
-      password
-      lastConnexion
+      elo
     }
   }
 `;
@@ -102,6 +101,7 @@ export const LEADERBOARD = gql`
     $wins: Int!
     $losses: Int!
     $draws: Int!
+    $elo: Int!
   ) {
     updateLeaderboard(
       player: $player
@@ -109,6 +109,7 @@ export const LEADERBOARD = gql`
       wins: $wins
       losses: $losses
       draws: $draws
+      elo: $elo
     )
   }
 `;
@@ -122,6 +123,7 @@ export const GET_ALL_LEADERBOARDS = gql`
       wins
       losses
       draws
+      elo
     }
   }
 `;

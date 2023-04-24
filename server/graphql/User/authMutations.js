@@ -1,7 +1,12 @@
 const User = require("../../models/User");
 const UserInputType = require("./inputTypes");
 const UserType = require("./types");
-const { GraphQLNonNull, GraphQLString, GraphQLBoolean, GraphQLObjectType } = require("graphql");
+const {
+  GraphQLNonNull,
+  GraphQLString,
+  GraphQLBoolean,
+  GraphQLObjectType,
+} = require("graphql");
 const jwt = require("jsonwebtoken");
 const getToken = require("../../middleware/authUser");
 const bcrypt = require("bcryptjs");
@@ -42,7 +47,32 @@ const login = {
     },
   },
   async resolve(parent, args) {
-    const user = await User.findOne({ email: args.email });
+    const user = (await User.aggregate([
+      {
+        $match: {
+          email: args.email,
+        },
+      },
+      {
+        $lookup: {
+          from: "leaderboards",
+          localField: "_id",
+          foreignField: "player",
+          as: "leaderboard",
+        },
+      },
+      {
+        $unwind: "$leaderboard",
+      },
+      {
+        $set: {
+          elo: "$leaderboard.elo",
+        },
+      },
+      {
+        $unset: "leaderboard",
+      },
+    ])).shift();
 
     if (!user) {
       throw new Error("User not found");
@@ -63,7 +93,7 @@ const login = {
     }
 
     const token = createJwtToken(user);
-    return {token, user};
+    return { token, user };
   },
 };
 

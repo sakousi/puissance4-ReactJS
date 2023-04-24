@@ -31,6 +31,7 @@ export default function JoinRoom() {
       win: false,
       wantRestart: false,
       color: "",
+      elo: 1000,
     };
 
     if (currentPlayer.current && socket) {

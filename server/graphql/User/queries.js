@@ -1,9 +1,15 @@
 const User = require("../../models/User");
 const UserType = require("./types");
 const bcrypt = require("bcryptjs");
-const jwt = require('jsonwebtoken');
-
-const { GraphQLID, GraphQLNonNull, GraphQLString, GraphQLList, GraphQLBoolean } = require("graphql");
+const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
+const {
+  GraphQLID,
+  GraphQLNonNull,
+  GraphQLString,
+  GraphQLList,
+  GraphQLBoolean,
+} = require("graphql");
 const { getToken } = require("../../middleware/authUser");
 
 const getUserById = {
@@ -15,16 +21,48 @@ const getUserById = {
     },
   },
   resolve: async (parent, args, context) => {
-    let userId = args?.id;
-    if (!userId) {
-      userId = jwt.decode(getToken(context.headers), process.env.JWT_SECRET)?.user?._id;
-    }
-
-    if (userId) {
-      return await User.findOne({ _id: userId });
-    }
+    return await getUserByIdData(args);
   },
 };
+
+async function getUserByIdData(args) {
+  let userId = args?.id;
+  if (!userId) {
+    userId = jwt.decode(getToken(context.headers), process.env.JWT_SECRET)?.user
+      ?._id;
+  }
+
+  if (userId) {
+    const user = await User.aggregate([
+      {
+        $match: {
+          _id: mongoose.Types.ObjectId(userId),
+        },
+      },
+      {
+        $lookup: {
+          from: "leaderboards",
+          localField: "_id",
+          foreignField: "player",
+          as: "leaderboard",
+        },
+      },
+      {
+        $unwind: "$leaderboard",
+      },
+      {
+        $set: {
+          elo: "$leaderboard.elo",
+        },
+      },
+      {
+        $unset: "leaderboard",
+      },
+    ]);
+    console.log(user);
+    return user.shift();
+  }
+}
 
 const getAllUsers = {
   type: new GraphQLList(UserType),
@@ -47,4 +85,4 @@ const getUserByEmail = {
   },
 };
 
-module.exports = { getUserById, getUserByEmail, getAllUsers };
+module.exports = { getUserById, getUserByEmail, getAllUsers, getUserByIdData };

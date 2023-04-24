@@ -31,6 +31,7 @@ export default function Multiplayer() {
       connect();
     } else if (socket.connected) {
       currentPlayer.current = {
+        id: appContext?.loggedIn ? appContext?.currentUser?.id : null,
         userName: username,
         socketId: socket.id,
         roomId: roomId.current,
@@ -38,6 +39,7 @@ export default function Multiplayer() {
         win: false,
         wantRestart: false,
         color: "",
+        elo: appContext.loggedIn ? appContext?.currentUser?.elo : null,
       };
       gameContext.setBoardList(createBoard(7, 6));
       socket.emit("createRoom", currentPlayer.current, createBoard(7, 6), 'matchmaking');
@@ -53,6 +55,7 @@ export default function Multiplayer() {
     socket.on("roomJoined", (data) => {
       roomId.current = data;
       currentPlayer.current = {
+        id: appContext?.loggedIn ? appContext?.currentUser?.id : null,
         userName: username,
         socketId: socket.id,
         roomId: roomId.current,
@@ -60,6 +63,7 @@ export default function Multiplayer() {
         win: false,
         wantRestart: false,
         color: "",
+        elo: appContext.loggedIn ? appContext?.currentUser?.elo : null,
       };
       gameContext.setCurrentPlayer(currentPlayer.current);
     });
@@ -67,6 +71,7 @@ export default function Multiplayer() {
     const handleConnect = () => {
       if (!isButtonClicked) return;
       currentPlayer.current = {
+        id: appContext?.loggedIn ? appContext?.currentUser?.id : null,
         userName: username,
         socketId: socket.id,
         roomId: roomId.current,
@@ -74,6 +79,7 @@ export default function Multiplayer() {
         win: false,
         wantRestart: false,
         color: "",
+        elo: appContext.loggedIn ? appContext?.currentUser?.elo : null,
       };
       gameContext.setBoardList(createBoard(7, 6));
       socket?.emit("createRoom", currentPlayer.current, createBoard(7, 6), 'matchmaking');

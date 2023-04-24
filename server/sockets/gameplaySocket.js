@@ -1,4 +1,5 @@
 // gameplaySocket.js
+const { updateElo } = require("../utils/elo.js");
 
 module.exports = (
   socket,
@@ -39,11 +40,34 @@ module.exports = (
           const winner = getWinner(colPlayed, i, room.board);
 
           if (winner || room.cellsPlayed === 42) {
+            console.log(room.players);
             let draw = false;
             if (room.cellsPlayed === 42) {
               draw = true;
             }
+            console.log(player.elo + " ELO");
+
+            const player1 = {
+              elo: player.elo,
+              username: player.userName,
+              id: player.id,
+            };
+            const player2 = {
+              elo: room.players[opponentIndex].elo,
+              username: player.userName,
+              id: room.players[opponentIndex].id,
+            };
+
+            if (player1.elo && player2.elo) {
+              if (winner) {
+                updateElo(player1, player2, "player1Wins");
+              } else if (draw) {
+                updateElo(player1, player2, "draw");
+              }
+            }
+
             room.players[opponentIndex].turn = false;
+
             io.to(room?.id).emit("victory", winner ? socket.id : null, draw);
           }
 

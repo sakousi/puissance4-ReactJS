@@ -12,6 +12,7 @@ const leaderboardType = new GraphQLObjectType({
         wins: { type: GraphQLInt },
         losses: { type: GraphQLInt },
         draws: { type: GraphQLInt },
+        elo: { type: GraphQLInt },
     })
 });
 

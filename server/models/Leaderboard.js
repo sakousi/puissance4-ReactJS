@@ -17,6 +17,9 @@ const leaderboardSchema = new mongoose.Schema({
   draws: {
     type: Number,
   },
+  elo: {
+    type: Number,
+  },
 });
 
 module.exports = mongoose.model("leaderboard", leaderboardSchema);
