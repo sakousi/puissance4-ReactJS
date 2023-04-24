@@ -3,8 +3,6 @@ import { Connect4GameContext } from "../../context/Connect4GameContext";
 import { useContext, useEffect, useRef, useState } from "react";
 import { createBoard } from "../../utils/functions";
 import { useNavigate } from "react-router-dom";
-import { useMutation } from "@apollo/client";
-import { LEADERBOARD } from "../../API/userRequest";
 import { AppContext } from "../../context/appContext";
 
 export default function Board() {
@@ -25,20 +23,6 @@ export default function Board() {
   const { socket, connect } = useContext(Connect4GameContext);
   const [draw, setDraw] = useState(false);
   const timeout = useRef(null);
-  const [Leaderboard] = useMutation(LEADERBOARD);
-
-  const updateLeaderboard = (wins, losses, draws) => {
-    if (!appContext.currentUser) return;
-    Leaderboard({
-      variables: {
-        player: appContext.currentUser?.id,
-        username: appContext.currentUser?.username,
-        wins,
-        losses,
-        draws,
-      },
-    });
-  };
 
   useEffect(() => {
     if (!socket) return;
@@ -46,13 +30,9 @@ export default function Board() {
     socket.on("victory", (socketId, draw) => {
       setIsOpen(true);
       if (draw) {
-        // updateLeaderboard(0, 0, 1);
         setDraw(true);
       } else if (socketId === socket.id) {
-        // updateLeaderboard(1, 0, 0);
         setVictory(true);
-      } else {
-        // updateLeaderboard(0, 1, 0);
       }
     });
 
