@@ -59,7 +59,6 @@ async function getUserByIdData(args, context) {
         $unset: "leaderboard",
       },
     ]);
-    console.log(user);
     return user.shift();
   }
 }

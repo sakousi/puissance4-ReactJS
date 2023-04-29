@@ -4,11 +4,13 @@ const {
 const { getUserByIdData } = require("../graphql/User/queries.js");
 
 async function updateElo(firstPlayer, secondPlayer, result, k = 32) {
+
   if (firstPlayer && secondPlayer && result) {
+
     const player1 = await getUserByIdData({ id: firstPlayer.id });
     const player2 = await getUserByIdData({ id: secondPlayer.id });
 
-    if (player1 && player2 && player1?.id !== player2?.id) {
+    if (player1 && player2 && player1._id !== player2._id) {
       // Calculer la probabilité attendue pour chaque joueur
       const expectedScorePlayer1 =
         1 / (1 + Math.pow(10, (player2.elo - player1.elo) / 400));
