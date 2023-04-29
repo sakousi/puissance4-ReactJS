@@ -9,7 +9,7 @@ function createSockets(httpServer) {
   console.log("createSockets");
   const io = new Server(httpServer, {
     cors: {
-      origin: "http://localhost:3000",
+      origin: process.env.SOCKET_URL,
       methods: ["GET", "POST"],
     },
   });

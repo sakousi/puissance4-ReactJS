@@ -17,12 +17,16 @@ module.exports = (socket, io, rooms, customRooms, generateId, findRoomById) => {
     if (type === "matchmaking") {
       for (const room of rooms) {
         if (room.players.length === 1) {
-          player.roomId = room.id;
-          player.color = "bg-yellow-500";
-          roomPlayer = room;
-          room.players.push(player);
-          roomId = room.id;
-          break;
+          if (room.players[0].id !== player.id) {
+            player.roomId = room.id;
+            player.color = "bg-yellow-500";
+            roomPlayer = room;
+            room.players.push(player);
+            roomId = room.id;
+            break;
+          } else {
+            console.log('meme joueur')
+          }
         }
       }
     }

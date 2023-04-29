@@ -21,11 +21,11 @@ const getUserById = {
     },
   },
   resolve: async (parent, args, context) => {
-    return await getUserByIdData(args);
+    return await getUserByIdData(args, context);
   },
 };
 
-async function getUserByIdData(args) {
+async function getUserByIdData(args, context) {
   let userId = args?.id;
   if (!userId) {
     userId = jwt.decode(getToken(context.headers), process.env.JWT_SECRET)?.user

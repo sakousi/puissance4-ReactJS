@@ -1,15 +1,22 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import { ApolloClient, InMemoryCache, gql, ApolloProvider, createHttpLink } from "@apollo/client";
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  createHttpLink,
+} from "@apollo/client";
 import { AppProvider } from "./context/appContext";
-import { setContext } from '@apollo/client/link/context';
+import { setContext } from "@apollo/client/link/context";
 
 // http://localhost:3000
 // mongodb://admin:password@localhost:27017
-
 const httpLink = createHttpLink({
-  uri: "http://localhost:3101/graphql",
+  uri:
+    process.env.NODE_ENV === "production"
+      ? "https://julickmellah.fr:3101/graphql"
+      : "http://localhost:3101/graphql",
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -36,4 +43,3 @@ root.render(
     <AppProvider />
   </ApolloProvider>
 );
-

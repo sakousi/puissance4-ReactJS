@@ -3,6 +3,8 @@ const { graphqlHTTP } = require("express-graphql");
 const schema = require("./graphql/schema");
 const { connectDB } = require("./db");
 const http = require("http");
+const https = require("https");
+const fs = require("fs");
 const { Server } = require("socket.io");
 const cors = require("cors");
 const { ApolloServer } = require("apollo-server-express");
@@ -20,12 +22,20 @@ const { createSockets } = require("./sockets/index");
 dotenv.config();
 validateEnv();
 
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-    credentials: true,
-  })
-);
+app.use(cors());
+
+// app.use(
+//   cors({
+//     origin: [
+//       "http://localhost:3000",
+//       "https://julickmellah.fr",
+//       "http://julickmellah.fr",
+//       "https://www.julickmellah.fr",
+//       "http://www.julickmellah.fr",
+//     ],
+//     credentials: true,
+//   })
+// );
 
 app.use(
   bodyParser.json({
@@ -49,7 +59,20 @@ app.use(
   })
 );
 
-const httpServer = http.createServer(app);
+let httpsServer = null;
+
+if (process.env.NODE_ENV === "production") {
+  httpsServer = https.createServer(
+    {
+      key: fs.readFileSync(process.env.PRIVKEY),
+      cert: fs.readFileSync(process.env.CERT),
+      ca: fs.readFileSync(process.env.CHAIN),
+    },
+    app
+  );
+} else {
+  httpsServer = http.createServer(app);
+}
 
 async function startApolloServer() {
   const server = new ApolloServer({
@@ -70,9 +93,9 @@ startApolloServer();
 connectDB();
 
 // server socket
-createSockets(httpServer);
+createSockets(httpsServer);
 
-httpServer.listen(process.env.PORT, () => {
+httpsServer.listen(process.env.PORT, () => {
   console.log(`Listening on http://localhost:${process.env.PORT}/`);
 });
 

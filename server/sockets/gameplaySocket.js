@@ -57,8 +57,8 @@ module.exports = (
               username: player.userName,
               id: room.players[opponentIndex].id,
             };
-
-            if (player1.elo && player2.elo) {
+            
+            if (player1.id && player2.id) {
               if (winner) {
                 updateElo(player1, player2, "player1Wins");
               } else if (draw) {

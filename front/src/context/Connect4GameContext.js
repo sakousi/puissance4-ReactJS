@@ -17,9 +17,11 @@ export default function Connect4GameProvider({ children }) {
   const [socket, setSocket] = useState(null);
   const [connected, setConnected] = useState(false);
 
+  const backendUrl = process.env.NODE_ENV === "production" ? "https://julickmellah.fr:3101" : "http://localhost:3101";
+
   const connect = () => {
     if (!connected) {
-      const newSocket = io.connect("http://localhost:3101");
+      const newSocket = io.connect(backendUrl);
       setSocket(newSocket);
       setConnected(true);
     }

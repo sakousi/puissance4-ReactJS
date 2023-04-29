@@ -47,6 +47,7 @@ const login = {
     },
   },
   async resolve(parent, args) {
+
     const user = (await User.aggregate([
       {
         $match: {
@@ -62,11 +63,14 @@ const login = {
         },
       },
       {
-        $unwind: "$leaderboard",
-      },
-      {
-        $set: {
-          elo: "$leaderboard.elo",
+        $addFields: {
+          elo: {
+            $cond: {
+              if: { $gt: [{ $size: "$leaderboard" }, 0] },
+              then: { $arrayElemAt: ["$leaderboard.elo", 0] },
+              else: "$$REMOVE",
+            },
+          },
         },
       },
       {
