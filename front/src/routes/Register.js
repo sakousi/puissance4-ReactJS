@@ -87,7 +87,7 @@ export default function Register() {
                 required
               ></input>
             </div>
-            <label className="ml-2 text-lg font-medium text-gray-900 text-gray-300">
+            <label className="ml-2 text-lg font-medium text-white text-gray-900 text-gray-300">
               I agree with the{" "}
               <Link
                 className="text-blue-600 hover:underline text-blue-500"

@@ -36,7 +36,7 @@ export default function Header() {
               {appContext.loggedIn ? (
                 <button
                   onClick={handleLogout}
-                  className="block px-4 py-2 text-xl text-gray-700 hover:bg-gray-100 hover:bg-gray-600 text-gray-200 hover:text-white"
+                  className="block px-4 py-2 text-xl text-white hover:bg-gray-100 hover:bg-gray-600 text-gray-200 hover:text-white"
                 >
                   Disconned
                 </button>
@@ -45,7 +45,7 @@ export default function Header() {
                   <li>
                     <Link
                       to={"/login"}
-                      className="block px-4 py-2 text-xl text-gray-700 hover:bg-gray-100 hover:bg-gray-600 text-gray-200 hover:text-white"
+                      className="block px-4 py-2 text-xl text-gray-700 text-white hover:bg-gray-100 hover:bg-gray-600 text-gray-200 hover:text-white"
                     >
                       Login
                     </Link>
@@ -53,7 +53,7 @@ export default function Header() {
                   <li>
                     <Link
                       to={"/register"}
-                      className="block px-4 py-2 text-xl text-gray-700 hover:bg-gray-100 hover:bg-gray-600 text-gray-200 hover:text-white"
+                      className="block px-4 py-2 text-xl text-gray-700 text-white hover:bg-gray-100 hover:bg-gray-600 text-gray-200 hover:text-white"
                     >
                       Register
                     </Link>

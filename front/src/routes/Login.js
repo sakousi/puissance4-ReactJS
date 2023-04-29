@@ -78,7 +78,7 @@ export default function Login() {
                 className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 bg-gray-700 border-gray-600 focus:ring-blue-600 ring-offset-gray-800"
               ></input>
             </div>
-            <label className="ml-2 text-lg font-medium text-gray-900 text-gray-300">
+            <label className="ml-2 text-lg font-medium text-white text-gray-900 text-gray-300">
               Remember me
             </label>
           </div>

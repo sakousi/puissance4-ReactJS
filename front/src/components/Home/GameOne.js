@@ -17,7 +17,7 @@ export default function GameOne() {
             Connect 4
           </h5>
         </Link>
-        <p className="mb-3 font-normal text-gray-700 text-gray-400">
+        <p className="mb-3 font-normal text-white text-gray-700 text-gray-400">
           Connect four of your colored discs in a row to win in the game of
           Connect Four.
         </p>
