@@ -19,23 +19,10 @@ const { config } = require("dotenv");
 const validateEnv = require("./utils/validateEnv");
 const { createSockets } = require("./sockets/index");
 
-dotenv.config();
-validateEnv();
+const envFile = process.env.NODE_ENV === "production" ? ".env.production" : ".env";
+dotenv.config({ path: envFile });
 
 app.use(cors());
-
-// app.use(
-//   cors({
-//     origin: [
-//       "http://localhost:3000",
-//       "https://julickmellah.fr",
-//       "http://julickmellah.fr",
-//       "https://www.julickmellah.fr",
-//       "http://www.julickmellah.fr",
-//     ],
-//     credentials: true,
-//   })
-// );
 
 app.use(
   bodyParser.json({
