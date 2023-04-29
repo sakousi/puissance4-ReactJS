@@ -127,7 +127,7 @@ export default function CreateRoom() {
       <div className="flex justify-end">
         <button
           type="button"
-          className="text-white m-2 bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
+          className="text-white m-2 bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
           onClick={() => {
             gameContext.setModaleRoomOpen(false);
           }}
@@ -137,12 +137,12 @@ export default function CreateRoom() {
       </div>
       <form className="flex flex-col justify-center items-center my-20">
         <div className="mb-6">
-          <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          <label className="block mb-2 text-sm font-medium text-gray-900 text-white">
             Username
           </label>
           <input
             type="username"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -151,7 +151,7 @@ export default function CreateRoom() {
         </div>
         <button
           type="submit"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
           onClick={(e) => {
             e.preventDefault();
             createRoom();

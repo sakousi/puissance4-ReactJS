@@ -11,7 +11,7 @@ export default function App() {
   return (
     <>
       <Header></Header>
-      <section className="flex flex-col dark:bg-gray-900 h-screen">
+      <section className="flex flex-col bg-gray-900 h-screen">
         <h1 className="text-white text-4xl text-center">Games</h1>
         <div className="grid grid-cols-3 mx-14 my-8 gap-8">
           <GameOne></GameOne>

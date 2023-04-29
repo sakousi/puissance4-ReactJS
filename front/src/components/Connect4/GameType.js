@@ -13,11 +13,11 @@ export default function GameType() {
   const buttonStyleClicked = "text-white text-xl";
 
   const baseStyle =
-    "inline-block w-full text-lg sm:text-2xl p-4 bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600";
+    "inline-block w-full text-lg sm:text-2xl p-4 bg-gray-50 hover:bg-gray-100 focus:outline-none bg-gray-700 hover:bg-gray-600";
 
   return (
-    <div className="row-start-1 lg:col-start-2 lg:col-span-2 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 min-w-full">
-      <ul className="flex flex-col sm:flex-row text-sm font-medium text-center text-gray-500 divide-x divide-gray-200 rounded-lg dark:divide-gray-600 dark:text-gray-400">
+    <div className="row-start-1 lg:col-start-2 lg:col-span-2 border border-gray-200 rounded-lg shadow bg-gray-800 border-gray-700 min-w-full">
+      <ul className="flex flex-col sm:flex-row text-sm font-medium text-center text-gray-500 divide-x divide-gray-200 rounded-lg divide-gray-600 text-gray-400">
         {["Multiplayer", "Room"].map((item, index) => {
           return (
             <li key={index} className="w-full">

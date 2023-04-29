@@ -124,8 +124,8 @@ export default function Board() {
   }
 
   return (
-    <section className="flex items-center justify-center dark:bg-gray-900">
-      <div className="flex my-14 rounded-lg dark:bg-gray-600">
+    <section className="flex items-center justify-center bg-gray-900">
+      <div className="flex my-14 rounded-lg bg-gray-600">
         {boardList.length > 0
           ? Array(boardList.length)
               .fill()
@@ -140,7 +140,7 @@ export default function Board() {
           className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full bg-black bg-opacity-50 z-10 flex items-center justify-center"
         >
           <div className="bg-red-500 bg-yellow-500"></div>
-          <div className="relative z-20 text-center bg-white rounded-lg shadow dark:bg-gray-700 px-2 py-4">
+          <div className="relative z-20 text-center  rounded-lg shadow bg-gray-700 px-2 py-4">
             <div className="flex items-center justify-center">
               <img
                 className=" w-20 h-20 mb-5"
@@ -157,10 +157,10 @@ export default function Board() {
                 alt=""
               />
             </div>
-            <h3 className=" mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+            <h3 className=" mb-5 text-lg font-normal text-gray-500 text-gray-400">
               {draw ? "DRAW" : victory ? "VICTORY" : "DEFEAT"}
             </h3>
-            <h2 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+            <h2 className="mb-5 text-lg font-normal text-gray-500 text-gray-400">
               {opponentWantsToPlayAgain === true
                 ? "Your opponent wants to play again"
                 : currentWantsToPlayAgain === true
@@ -169,7 +169,7 @@ export default function Board() {
             </h2>
             <button
               type="button"
-              className="mx-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              className="mx-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
               onClick={() => {
                 handlePlayAgain();
               }}
@@ -178,7 +178,7 @@ export default function Board() {
             </button>
             <button
               type="button"
-              className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
+              className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
               onClick={() => {
                 gameContext.setCurrentPlayer(null);
                 socket.disconnect();

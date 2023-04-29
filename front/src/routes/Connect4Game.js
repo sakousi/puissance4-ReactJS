@@ -25,7 +25,7 @@ export default function Connect4Game() {
   }, []);
 
   return (
-    <section className="flex flex-col dark:bg-gray-900 min-h-screen">
+    <section className="flex flex-col bg-gray-900 min-h-screen">
       <GamePlayersTab></GamePlayersTab>
       <Board></Board>
     </section>
