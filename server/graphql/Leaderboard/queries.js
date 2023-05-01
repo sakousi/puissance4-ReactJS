@@ -39,7 +39,7 @@ const getAllLeaderboards = {
   type: new GraphQLList(leaderboardType),
   description: "Get all leaderboards",
   async resolve() {
-    return await Leaderboard.find({}).sort({ wins: -1 }).limit(20);
+    return await Leaderboard.find({}).sort({ elo: -1 }).limit(20);
   },
 };
 
