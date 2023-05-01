@@ -1,7 +1,6 @@
 // import { Connect4GameContext } from "../context/Connect4GameContext";
 
 export function updateCurrentPlayer(gameContext, player) {
-  console.log(player)
   gameContext.setCurrentPlayer({player});
 }
 

@@ -1,5 +1,86 @@
 // gameplaySocket.js
-const { updateElo } = require("../utils/elo.js");
+const { updateStatistics } = require("../utils/elo.js");
+
+async function handleMove(room, colPlayed, socket, io) {
+  const playerIndex = room.players.findIndex(
+    (player) => player.socketId === socket.id
+  );
+  const opponentIndex = room.players.findIndex(
+    (player) => player.socketId !== socket.id
+  );
+  const player = room.players[playerIndex];
+
+  if (room.board && player.turn) {
+    for (let i = 0; i < room?.board[colPlayed]?.length; i++) {
+      if (room.board[colPlayed][i] === 0) {
+        room.board[colPlayed][i] = socket.id;
+
+        const playedCell = {
+          column: Number(colPlayed),
+          row: i,
+        };
+        room.cellsPlayed++;
+
+        room.players[playerIndex].turn = false;
+        room.players[opponentIndex].turn = true;
+
+        const winner = getWinner(colPlayed, i, room.board);
+
+        if (winner || room.cellsPlayed === 42) {
+          await handleGameEnd(room, winner, socket, io);
+        }
+
+        return io
+          .to(room?.id)
+          .emit("move", room.board, playedCell, socket.id, room.players);
+      }
+    }
+  }
+}
+
+// Helper function to handle the end of the game
+async function handleGameEnd(room, winner, socket, io) {
+  const draw = room.cellsPlayed === 42;
+  const playerIndex = room.players.findIndex(
+    (player) => player.socketId === socket.id
+  );
+  const opponentIndex = room.players.findIndex(
+    (player) => player.socketId !== socket.id
+  );
+  const player1 = {
+    elo: room.players[playerIndex].elo,
+    username: room.players[playerIndex].userName,
+    id: room.players[playerIndex].id,
+  };
+  const player2 = {
+    elo: room.players[opponentIndex].elo,
+    username: room.players[opponentIndex].userName,
+    id: room.players[opponentIndex].id,
+  };
+
+  if (player1.id && player2.id) {
+    if (winner) {
+      await updateStatistics(player1, player2, "player1Wins");
+    } else if (draw) {
+      await updateStatistics(player1, player2, "draw");
+    }
+  }
+
+  room.players[opponentIndex].turn = false;
+  io.to(room?.id).emit("victory", winner ? socket.id : null, draw);
+}
+
+// Helper function to handle startGame event
+function handleStartGame(room, board, io) {
+  room.board = board;
+  room.cellsPlayed = 0;
+  const firstPlayerIndex = Math.random() < 0.5 ? 0 : 1;
+  room.players.forEach((player, index) => {
+    player.turn = index === firstPlayerIndex;
+  });
+
+  io.to(room?.id).emit("startGame", room.players);
+}
 
 module.exports = (
   socket,
@@ -10,107 +91,31 @@ module.exports = (
   findCustomRoomById
 ) => {
   socket.on("move", (colPlayed) => {
-    let room;
-    room = findRoomById(socket.id, rooms);
-    if (!room) {
-      room = findCustomRoomById(socket.id, customRooms);
-    }
-    let playerIndex = room.players.findIndex(
-      (player) => player.socketId === socket.id
-    );
-    let opponentIndex = room.players.findIndex(
-      (player) => player.socketId !== socket.id
-    );
-    let player = room.players[playerIndex];
-
-    if (room.board && player.turn) {
-      for (let i = 0; i < room?.board[colPlayed]?.length; i++) {
-        if (room.board[colPlayed][i] === 0) {
-          room.board[colPlayed][i] = socket.id;
-
-          const playedCell = {
-            column: Number(colPlayed),
-            row: i,
-          };
-          room.cellsPlayed++;
-
-          room.players[playerIndex].turn = false;
-          room.players[opponentIndex].turn = true;
-
-          const winner = getWinner(colPlayed, i, room.board);
-
-          if (winner || room.cellsPlayed === 42) {
-
-            let draw = false;
-            if (room.cellsPlayed === 42) {
-              draw = true;
-            }
-
-            const player1 = {
-              elo: player.elo,
-              username: player.userName,
-              id: player.id,
-            };
-            const player2 = {
-              elo: room.players[opponentIndex].elo,
-              username: player.userName,
-              id: room.players[opponentIndex].id,
-            };
-
-            if (player1.id && player2.id) {
-              if (winner) {
-                updateElo(player1, player2, "player1Wins");
-              } else if (draw) {
-                updateElo(player1, player2, "draw");
-              }
-            }
-
-            room.players[opponentIndex].turn = false;
-
-            io.to(room?.id).emit("victory", winner ? socket.id : null, draw);
-          }
-
-          return io
-            .to(room?.id)
-            .emit("move", room.board, playedCell, socket.id, room.players);
-        }
-      }
+    let room =
+      findRoomById(socket.id, rooms) ||
+      findCustomRoomById(socket.id, customRooms);
+    if (room) {
+      handleMove(room, colPlayed, socket, io);
     }
   });
 
-  socket.on("play-again", (playerWantsToRestartId) => {
-    let room;
-    room = findRoomById(socket.id, rooms);
-    if (!room) {
-      room = findCustomRoomById(socket.id, customRooms);
+  socket.on("play-again", () => {
+    const room =
+      findRoomById(socket.id, rooms) ||
+      findCustomRoomById(socket.id, customRooms);
+    if (room) {
+      io.to(room?.id).emit("play-again", socket.id);
     }
-    io.to(room?.id).emit("play-again", playerWantsToRestartId);
   });
 
   socket.on("startGame", (board) => {
-    let room;
-    room = findRoomById(socket.id, rooms);
-    if (!room) {
-      room = findCustomRoomById(socket.id, customRooms);
+    const room =
+      findRoomById(socket.id, rooms) ||
+      findCustomRoomById(socket.id, customRooms);
+    if (room && board) {
+      handleStartGame(room, board, io);
     }
-    if (board) {
-      room.board = board;
-      room.cellsPlayed = 0;
-    }
-    const firstPlayerIndex = Math.random() < 0.5 ? 0 : 1;
-    room.players.forEach((player, index) => {
-      player.turn = index === firstPlayerIndex;
-    });
-
-    io.to(room?.id).emit("startGame", room.players);
   });
-
-  socket.on("checkWin", (data) => {
-    // Logic to check if game is won
-    // Emit event to notify players of win/loss
-  });
-
-  // ... other gameplay events
 };
 
 function getWinner(column, row, board) {

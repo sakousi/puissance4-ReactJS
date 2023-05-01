@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function GameOne() {
   return (
-    <div className="max-w-sm  border border-gray-200 rounded-lg shadow bg-gray-800 border-gray-700">
+    <div className="max-w-sm border border-gray-200 rounded-lg shadow bg-gray-800 border-gray-700">
       <Link to='/connect4'>
         <img
           className="rounded-t-lg"

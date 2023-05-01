@@ -13,7 +13,7 @@ export default function App() {
       <Header></Header>
       <section className="flex flex-col bg-gray-900 h-screen">
         <h1 className="text-white text-4xl text-center">Games</h1>
-        <div className="grid grid-cols-3 mx-14 my-8 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 mx-14 my-8 gap-8">
           <GameOne></GameOne>
         </div>
       </section>

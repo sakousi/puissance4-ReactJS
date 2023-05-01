@@ -1,18 +1,28 @@
-import { useLazyQuery, useQuery } from "@apollo/client";
-import { useContext, useEffect } from "react";
+import { useLazyQuery } from "@apollo/client";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { GET_ALL_LEADERBOARDS } from "../../API/userRequest";
 import { AppContext } from "../../context/appContext";
 
 export default function Leaderboard() {
   const appContext = useContext(AppContext);
+  const [leaderboards, setLeaderboards] = useState([]);
 
-  const { data, loading, error } = useQuery(GET_ALL_LEADERBOARDS);
+  const [getAllLeaderboards] = useLazyQuery(GET_ALL_LEADERBOARDS, {
+    fetchPolicy: "network-only",
+    onCompleted(data) {
+      setLeaderboards(data.getAllLeaderboards);
+    },
+  });
+
+  useEffect(() => {
+    getAllLeaderboards();
+  }, []);
 
   return (
     <>
       {appContext?.currentUser ? (
-        <div className="col-span-1 min-w-full max-w-sm border border-gray-200 rounded-lg shadow bg-gray-800 border-gray-700">
+        <div className="col-span-1 relative min-w-full max-w-sm border border-gray-200 rounded-lg shadow bg-gray-800 border-gray-700">
           <div className="overflow-auto max-h-96">
             <div className="min-w-full divide-y divide-gray-200 divide-gray-700">
               <div className="grid grid-cols-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-gray-200">
@@ -27,7 +37,7 @@ export default function Leaderboard() {
                 </div>
               </div>
               <div className=" divide-y divide-gray-200 bg-gray-800 divide-gray-700">
-                {data?.getAllLeaderboards?.map((leaderboard) => {
+                {leaderboards?.map((leaderboard) => {
                   return (
                     <div
                       key={leaderboard.username}
@@ -58,6 +68,12 @@ export default function Leaderboard() {
               </div>
             </div>
           </div>
+          <button
+            onClick={() => getAllLeaderboards()}
+            className="absolute text-white right-[0%] sm:right-[-5%] top-[-10%] sm:top-[-5%] h-fit bg-green-600 hover:bg-green-700 font-medium rounded-lg text-sm w-auto px-3 py-1.5 text-center"
+          >
+            Refresh
+          </button>
         </div>
       ) : (
         <div className="col-span-1 grid grid-rows-4 min-w-full max-w-sm border border-gray-200 rounded-lg shadow bg-gray-800 border-gray-700">

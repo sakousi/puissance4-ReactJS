@@ -65,7 +65,7 @@ export default function CreateRoom() {
         win: false,
         wantRestart: false,
         color: "",
-        elo: 1000
+        elo: null
       };
       gameContext.setCurrentPlayer(currentPlayer.current);
     });
@@ -80,7 +80,7 @@ export default function CreateRoom() {
         win: false,
         wantRestart: false,
         color: "",
-        elo: 1000
+        elo: null
 
       };
       gameContext.setBoardList(createBoard(7, 6));
