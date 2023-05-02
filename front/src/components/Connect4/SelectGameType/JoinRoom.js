@@ -74,7 +74,6 @@ export default function JoinRoom() {
   }, [gameContext.modaleRoomOpen, socket]);
 
   useEffect(() => {
-    setUsername(appContext.currentUser?.username || generateUsername());
     if (
       gameContext.currentPlayer &&
       gameContext.currentPlayer.roomId &&
@@ -88,6 +87,10 @@ export default function JoinRoom() {
     gameContext.currentPlayer,
     navigate,
   ]);
+
+  useEffect(() => {
+    setUsername(appContext.currentUser?.username || generateUsername());
+  }, []);
 
   return (
     <>

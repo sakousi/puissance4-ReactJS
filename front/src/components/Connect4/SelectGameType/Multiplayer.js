@@ -108,8 +108,6 @@ export default function Multiplayer() {
   }, [socket, isButtonClicked]);
 
   useEffect(() => {
-    setUsername(appContext.currentUser?.username || generateUsername());
-
     if (
       gameContext.currentPlayer &&
       gameContext.currentPlayer.roomId &&
@@ -124,6 +122,11 @@ export default function Multiplayer() {
     navigate,
     appContext.currentUser,
   ]);
+
+  useEffect(() => {
+    setUsername(appContext.currentUser?.username || generateUsername());
+
+  }, [appContext.currentUser]);
 
   return (
     <>

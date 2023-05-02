@@ -5,18 +5,22 @@ import { useNavigate } from "react-router-dom";
 
 export default function GamePlayersTab() {
   const gameContext = useContext(Connect4GameContext);
-  const currentPlayer = gameContext.currentPlayer;
-  // const opponent = gameContext.opponent;
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const { socket, connect } = useContext(Connect4GameContext);
+  const [currentPlayer, setCurrentPlayer] = useState(null);
   const [opponent, setOpponent] = useState(null);
   const [waitingSeconds, setWaitingSeconds] = useState(0);
+  const [timer, setTimer] = useState(0);
 
   useEffect(() => {
     if (!gameContext.currentPlayer && !socket?.connected) {
       gameContext.setOpponent(null);
       navigate("/connect4");
+    }
+
+    if (gameContext.currentPlayer) {
+      setCurrentPlayer(gameContext.currentPlayer);
     }
 
     if (gameContext.opponent) {
@@ -33,6 +37,28 @@ export default function GamePlayersTab() {
     }
   }, [opponent]);
 
+  useEffect(() => {
+    if (!currentPlayer || !opponent) return;
+
+    const intervalId = setInterval(() => {
+      setTimer((prevTimer) => prevTimer + 1);
+    }, 1000);
+
+    return () => {
+      setTimer(0);
+      clearInterval(intervalId);
+    };
+  }, [currentPlayer, currentPlayer?.turn, opponent, opponent?.turn]);
+
+  function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+
+    return `${minutes.toString().padStart(2, "0")}:${remainingSeconds
+      .toString()
+      .padStart(2, "0")}`;
+  }
+
   return (
     <>
       <nav className=" border-gray-200 px-2 sm:px-4 py-2.5 bg-gray-900">
@@ -40,20 +66,38 @@ export default function GamePlayersTab() {
           {opponent ? (
             <ul className="lg:col-start-2 grid col-span-2 lg:col-span-1 grid-cols-2 p-4 border">
               <li className="flex flex-row items-center justify-center mx-3 lg:mx-8">
-                <p className="text-white text-2xl text-center">
-                  {currentPlayer?.userName ? currentPlayer.userName : ""}
-                </p>
+                <div className="flex items-end flex-col">
+                  <p className="text-white text-2xl text-center">
+                    {currentPlayer?.userName ? currentPlayer.userName : ""}
+                  </p>
+                  <p
+                    className={`text-white ${
+                      currentPlayer?.turn ? "bg-green-600" : "bg-gray-800"
+                    } p-1.5 w-min`}
+                  >
+                    {currentPlayer?.turn ? formatTime(timer) : "00:00"}
+                  </p>
+                </div>
                 <div
-                  className={`${gameContext?.currentPlayer?.color} m-2 h-16 w-16 rounded-full`}
+                  className={`${currentPlayer?.color} m-2 h-16 w-16 rounded-full`}
                 ></div>
               </li>
               <li className="flex flex-row items-center justify-center mx-3 lg:mx-8">
                 <div
-                  className={`${gameContext?.opponent?.color} m-2 h-16 w-16 rounded-full`}
+                  className={`${opponent?.color} m-2 h-16 w-16 rounded-full`}
                 ></div>
-                <p className="text-white text-2xl text-center">
-                  {opponent?.userName ? opponent.userName : ""}
-                </p>
+                <div className="flex items-start flex-col">
+                  <p className="text-white text-2xl text-center">
+                    {opponent?.userName ? opponent.userName : ""}
+                  </p>
+                  <p
+                    className={`text-white ${
+                      opponent?.turn ? "bg-green-600" : "bg-gray-800"
+                    } p-1.5 w-min`}
+                  >
+                    {opponent?.turn ? formatTime(timer) : "00:00"}
+                  </p>
+                </div>
               </li>
             </ul>
           ) : (

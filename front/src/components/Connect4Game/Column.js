@@ -39,7 +39,9 @@ export default function Column(props) {
       currentPlayer.current = players.find(
         (player) => player.socketId === socket.id
       );
+      gameContext.setCurrentPlayer(currentPlayer.current);
       const opponent = players.find((player) => player.socketId !== socket.id);
+      gameContext.setOpponent(opponent);
       const casePlayed = document.getElementById(
         `${playedCell.column}-${playedCell.row}`
       );

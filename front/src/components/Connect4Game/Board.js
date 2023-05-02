@@ -62,6 +62,14 @@ export default function Board() {
       });
     });
 
+    return () => {
+      gameContext.setModaleRoomOpen(false);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!socket) return;
+
     socket.on("opponent-disconnected", () => {
       setAlertMessage("Your opponent has disconnected.");
       socket.disconnect();
@@ -77,7 +85,7 @@ export default function Board() {
 
     return () => {
       clearTimeout(timeout.current);
-      gameContext.setModaleRoomOpen(false);
+      socket.off("opponent-disconnected");
     };
   }, []);
 
