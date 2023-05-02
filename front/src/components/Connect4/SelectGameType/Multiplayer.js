@@ -42,7 +42,12 @@ export default function Multiplayer() {
         elo: appContext.loggedIn ? appContext?.currentUser?.elo : null,
       };
       gameContext.setBoardList(createBoard(7, 6));
-      socket.emit("createRoom", currentPlayer.current, createBoard(7, 6), 'matchmaking');
+      socket.emit(
+        "createRoom",
+        currentPlayer.current,
+        createBoard(7, 6),
+        "matchmaking"
+      );
     } else {
       socket.connect();
     }
@@ -82,7 +87,12 @@ export default function Multiplayer() {
         elo: appContext.loggedIn ? appContext?.currentUser?.elo : null,
       };
       gameContext.setBoardList(createBoard(7, 6));
-      socket?.emit("createRoom", currentPlayer.current, createBoard(7, 6), 'matchmaking');
+      socket?.emit(
+        "createRoom",
+        currentPlayer.current,
+        createBoard(7, 6),
+        "matchmaking"
+      );
       isButtonClickedRef.current = false;
       setIsButtonClicked(false);
     };

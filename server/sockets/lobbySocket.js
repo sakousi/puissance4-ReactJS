@@ -34,7 +34,7 @@ function handleCreateRoom(
       generateId
     ));
   }
-
+  
   socket.join(roomId);
   socket.emit("roomJoined", roomId);
   console.log(`Client ${socket.id} joined room ${roomId}`);

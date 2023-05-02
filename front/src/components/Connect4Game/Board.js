@@ -85,6 +85,7 @@ export default function Board() {
     if (!gameContext.currentPlayer && !socket) {
       navigate("/connect4");
     }
+
     setBoardList(gameContext.boardList);
 
     if (resetRequested) {
@@ -97,16 +98,9 @@ export default function Board() {
     }
 
     setCurrentPlayer(gameContext.currentPlayer);
-  }, [
-    alertMessage,
-    boardList,
-    gameContext,
-    gameContext.boardList,
-    gameContext.currentPlayer,
-    navigate,
-    resetRequested,
-    socket,
-  ]);
+  }, [alertMessage, boardList, gameContext, navigate, resetRequested, socket]);
+
+
 
   function resetGame() {
     setIsOpen(false);
