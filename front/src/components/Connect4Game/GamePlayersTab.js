@@ -62,16 +62,16 @@ export default function GamePlayersTab() {
   return (
     <>
       <nav className=" border-gray-200 px-2 sm:px-4 py-2.5 bg-gray-900">
-        <div className="grid grid-cols-3">
+        <div className="flex flex-row items-center justify-center relative">
           {opponent ? (
-            <ul className="lg:col-start-2 grid col-span-2 lg:col-span-1 grid-cols-2 p-4 border">
+            <ul className="flex flex-row p-4 border">
               <li className="flex flex-row items-center justify-center mx-3 lg:mx-8">
                 <div className="flex items-end flex-col">
-                  <p className="text-white text-2xl text-center">
+                  <p className="text-white text-base min-[450px]:text-lg sm:text-2xl text-center">
                     {currentPlayer?.userName ? currentPlayer.userName : ""}
                   </p>
                   <p
-                    className={`text-white ${
+                    className={`text-white text-[12px] min-[450px]:text-[14px] sm:text-md ${
                       currentPlayer?.turn ? "bg-green-600" : "bg-gray-800"
                     } p-1.5 w-min`}
                   >
@@ -79,19 +79,19 @@ export default function GamePlayersTab() {
                   </p>
                 </div>
                 <div
-                  className={`${currentPlayer?.color} m-2 h-16 w-16 rounded-full`}
+                  className={`${currentPlayer?.color} m-2 h-10 min-[450px]:h-12 sm:h-16 w-10 min-[450px]:w-12 sm:w-16 rounded-full`}
                 ></div>
               </li>
               <li className="flex flex-row items-center justify-center mx-3 lg:mx-8">
                 <div
-                  className={`${opponent?.color} m-2 h-16 w-16 rounded-full`}
+                  className={`${opponent?.color} m-2 h-10 min-[450px]:h-12 sm:h-16 w-10 min-[450px]:w-12 sm:w-16 rounded-full`}
                 ></div>
                 <div className="flex items-start flex-col">
-                  <p className="text-white text-2xl text-center">
+                  <p className="text-white text-base min-[450px]:text-lg sm:text-2xl text-center">
                     {opponent?.userName ? opponent.userName : ""}
                   </p>
                   <p
-                    className={`text-white ${
+                    className={`text-white text-[12px] min-[450px]:text-[14px] sm:text-md ${
                       opponent?.turn ? "bg-green-600" : "bg-gray-800"
                     } p-1.5 w-min`}
                   >
@@ -105,26 +105,23 @@ export default function GamePlayersTab() {
               Waiting for opponent: {waitingSeconds} seconds
             </div>
           )}
-
-          <div className="flex items-center  justify-end">
-            <div>
-              <ul
-                className="flex flex-row py-2"
-                aria-labelledby="user-menu-button"
-              >
-                <li className="mx-8">
-                  <Link
-                    onClick={() => {
-                      setIsOpen(!isOpen);
-                    }}
-                    className="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-lg px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
-                  >
-                    Leave Game
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
+          <button
+            onClick={() => {
+              setIsOpen(!isOpen);
+            }}
+            className="absolute top-0 right-0 bg-red-700 hover:bg-red-800 text-white rounded-full font-bold w-8 h-8 flex items-center justify-center "
+          >
+            <svg
+              className="w-5 h-5 text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 320 512"
+            >
+              <path
+                fill="currentColor"
+                d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"
+              ></path>
+            </svg>
+          </button>
         </div>
       </nav>
       {isOpen && (
