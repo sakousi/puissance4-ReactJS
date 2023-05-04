@@ -23,7 +23,6 @@ export function AppProvider() {
 
   const [getUserById] = useLazyQuery(GET_CURRENT_USER, {
     onCompleted(data) {
-      console.log(data);
       setCurrentUser(data.getUserById);
       setLoggedIn(true);
     },

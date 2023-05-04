@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AppContext } from "../context/appContext";
 import { useApolloClient } from "@apollo/client";
@@ -6,6 +6,7 @@ import { useApolloClient } from "@apollo/client";
 export default function Header() {
   const appContext = useContext(AppContext);
   const client = useApolloClient();
+  const [showMenu, setShowMenu] = useState(false);
 
   const handleLogout = () => {
     appContext.setLoggedIn(false);
@@ -13,6 +14,20 @@ export default function Header() {
     window.location.reload();
     client.resetStore();
   };
+
+  const handleClickOutside = (event) => {
+    if (showMenu && !event.target.closest("#dropdownmenu")) {
+      setShowMenu(false);
+    }
+  };
+
+  useEffect(() => {
+    if (showMenu) {
+      document.addEventListener("click", handleClickOutside);
+    } else {
+      document.removeEventListener("click", handleClickOutside);
+    }
+  }, [showMenu]);
 
   return (
     <nav className=" border-gray-200 px-2 sm:px-4 py-2.5 bg-gray-900 relative">
@@ -34,12 +49,55 @@ export default function Header() {
               aria-labelledby="user-menu-button"
             >
               {appContext.loggedIn ? (
-                <button
-                  onClick={handleLogout}
-                  className="block px-4 py-2 text-xl text-white hover:bg-gray-100 hover:bg-gray-600 text-gray-200 hover:text-white"
-                >
-                  Disconned
-                </button>
+                <>
+                  <li
+                    id="dropdownmenu"
+                    className="flex items-center flex-col relative"
+                  >
+                    <button
+                      className="flex items-center text-lg font-medium rounded-full hover:text-blue-600 dark:hover:text-blue-500 md:mr-0 focus:ring-4 focus:ring-gray-700 text-white"
+                      type="button"
+                      onClick={() => setShowMenu(!showMenu)}
+                    >
+                      <img
+                        className="w-8 h-8 mr-2 rounded-full"
+                        src={process.env.PUBLIC_URL + "/images/userconnect.png"}
+                        alt="user"
+                      />
+                      {appContext?.currentUser?.username}
+                      <svg
+                        className="w-4 h-4 mx-1.5"
+                        aria-hidden="true"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"></path>
+                      </svg>
+                    </button>
+                    <div
+                      className={`absolute z-10 divide-y rounded-lg shadow w-36 bg-gray-700 divide-gray-600 top-[130%] ${
+                        showMenu ? "" : "hidden"
+                      }`}
+                    >
+                      <ul className=" text-lg text-gray-700 dark:text-gray-200">
+                        <li>
+                          <Link className="block px-4 py-2 hover:bg-gray-600 hover:text-white">
+                            Settings
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            onClick={() => handleLogout()}
+                            className="block px-4 py-2 hover:bg-gray-600 text-gray-200 hover:text-white"
+                          >
+                            Sign out
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                </>
               ) : (
                 <>
                   <li>
@@ -91,3 +149,9 @@ export default function Header() {
     </nav>
   );
 }
+// {/* <button
+//                   onClick={handleLogout}
+//                   className="block px-4 py-2 text-xl text-white hover:bg-gray-100 hover:bg-gray-600 text-gray-200 hover:text-white"
+//                 >
+//                   Disconned
+//                 </button> */}
