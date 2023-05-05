@@ -127,3 +127,19 @@ export const GET_ALL_LEADERBOARDS = gql`
     }
   }
 `;
+
+export const GET_ALL_GAMES = gql`
+  query GetGamesByUserId {
+    getGamesByUserId {
+      id
+      player1
+      player2
+      winner
+      dateStarted
+      eloChange {
+        player1EloChange
+        player2EloChange
+      }
+    }
+  }
+`;

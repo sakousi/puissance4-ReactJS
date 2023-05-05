@@ -140,7 +140,7 @@ export default function GamePlayersTab() {
               <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
             <h3 className=" mb-5 text-xl font-normal text-gray-500 text-gray-400">
-              Are you sure you want to delete this product?
+              Are you sure you want to leave this game?
             </h3>
             <button
               type="button"

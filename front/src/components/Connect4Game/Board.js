@@ -71,7 +71,7 @@ export default function Board() {
     if (!socket) return;
 
     socket.on("opponent-disconnected", () => {
-      setAlertMessage("Your opponent has disconnected.");
+      setAlertMessage("Your opponent disconnected.");
       socket.disconnect();
       new Promise(
         (resolve) =>

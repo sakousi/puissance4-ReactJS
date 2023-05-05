@@ -38,14 +38,14 @@ export default function Header() {
             className="h-12 w-12 sm:h-16 sm:w-16 mx-4 rounded-full"
             alt="dauphin Logo"
           />
-          <span className="self-center text-3xl font-semibold whitespace-nowrap text-white">
+          <span className="self-center hidden sm:content text-3xl font-semibold whitespace-nowrap text-white">
             MellahGames
           </span>
         </Link>
         <div className="flex items-center md:order-2">
           <div>
             <ul
-              className="flex flex-col py-2 md:flex-row"
+              className="flex flex-col py-2 md:flex-row mr-2 sm:mr-0"
               aria-labelledby="user-menu-button"
             >
               {appContext.loggedIn ? (
@@ -81,6 +81,11 @@ export default function Header() {
                       }`}
                     >
                       <ul className=" text-lg text-gray-700 dark:text-gray-200">
+                        <li>
+                          <Link to={'/statistics'} className="block px-4 py-2 hover:bg-gray-600 hover:text-white">
+                            Statistics
+                          </Link>
+                        </li>
                         <li>
                           <Link className="block px-4 py-2 hover:bg-gray-600 hover:text-white">
                             Settings

@@ -5,6 +5,7 @@ import {
   RouterProvider,
   Routes,
   Route,
+  Navigate,
 } from "react-router-dom";
 import { GET_CURRENT_USER } from "../API/userRequest";
 import App from "../App";
@@ -13,12 +14,12 @@ import Connect4Game from "../routes/Connect4Game";
 import Login from "../routes/Login";
 import Register from "../routes/Register";
 import Connect4GameProvider from "./Connect4GameContext";
+import Statistics from "../routes/Statistics";
 export const AppContext = createContext(null);
 
 export function AppProvider() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
-
   const token = localStorage.getItem("token");
 
   const [getUserById] = useLazyQuery(GET_CURRENT_USER, {
@@ -42,6 +43,10 @@ export function AppProvider() {
     {
       path: "/register",
       element: <Register />,
+    },
+    {
+      path: "/statistics",
+      element: loggedIn ? <Statistics /> : <Navigate to="/" />,
     },
     {
       path: "/",
