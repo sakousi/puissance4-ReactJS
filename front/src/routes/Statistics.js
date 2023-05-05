@@ -7,21 +7,21 @@ import { AppContext } from "../context/appContext";
 
 export default function Statistics() {
   const appContext = useContext(AppContext);
-  const navigate = useNavigate();
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const [getAllGames] = useLazyQuery(GET_ALL_GAMES, {
-    fetchPolicy: "network-only",
+    fetchPolicy: "no-cache",
     onCompleted(data) {
       setGames(data.getGamesByUserId);
-      console.log(data.getGamesByUserId);
     },
   });
 
   useEffect(() => {
-    getAllGames();
-  }, []);
+    if (appContext.currentUser) {
+      getAllGames({ variables: { id: appContext.currentUser.id } });
+    }
+  }, [appContext.currentUser, getAllGames]);
 
   useEffect(() => {
     if (games.length > 0) {
@@ -40,47 +40,71 @@ export default function Statistics() {
   return (
     <>
       <Header></Header>
-      <section className="flex justify-center items-center flex-col h-screen bg-gray-900">
+      <section className="flex items-center flex-col h-screen pt-10 bg-gray-900">
         <h1 className="text-white text-4xl m-8">Statistics</h1>
 
-        <ul>
-          {games &&
-            appContext.currentUser &&
-            games?.map((game) => {
-              if (!game) return;
-              const winner = game.winner === appContext.currentUser.id;
-              return (
-                <li className="flex flex-row items-center justify-between text-base sm:text-lg rounded-3xl py-1 px-5 bg-gray-800 my-1.5" key={game.id}>
-                  <p className="text-white">{formatDate(game.dateStarted)}</p>
-                  <p
-                    className={`${
-                      winner ? "text-green-600" : "text-red-600"
-                    } font-semibold px-2`}
+        <table>
+          <tbody>
+            <tr className="bg-gray-800 text-gray-500 text-sm sm:text-lg">
+              <td className="text-left hiddentable">
+                <span className="paddingtr">Date</span>
+              </td>
+              <td className="text-left p-3">Opponent</td>
+              <td className="text-left p-3">Result</td>
+              <td className="text-left p-3">Elo change</td>
+              <td className="text-left p-3 hiddentable">
+                <span className="paddingtr">Actual Elo</span>
+              </td>
+            </tr>
+            {games &&
+              appContext.currentUser &&
+              games?.map((game) => {
+                const winner = game.winner === appContext.currentUser.id;
+                return (
+                  <tr
+                    className="borderstats bg-gray-800 hover:bg-gray-700 text-white text-base sm:text-lg"
+                    key={game.id}
                   >
-                    {winner ? "Victory" : "Defeat"}
-                  </p>
-                  <p
-                    className={`${
-                      winner ? "text-green-600" : "text-red-600"
-                    } font-semibold px-2`}
-                  >
-                    {winner
-                      ? '+' + game.eloChange.player1EloChange + ' Elo'
-                      : game.eloChange.player2EloChange  + ' Elo'}
-                  </p>
-                  <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        console.log('replay')
-                      }}
-                      className="text-white h-fit bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-xl text-sm w-auto px-3 py-0.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800"
+                    <td className="hiddentable ">
+                      <span className="paddingtr">
+                        {formatDate(game.dateStarted)}
+                      </span>
+                    </td>
+                    <td className=" paddingtr px-3">
+                      {game.player1.id === appContext.currentUser.id
+                        ? game.player2.username
+                        : game.player1.username}
+                    </td>
+                    <td
+                      className={`${
+                        winner ? "text-green-600" : "text-red-600"
+                      } font-semibold px-3`}
                     >
-                      Replay
-                    </button>
-                </li>
-              );
-            })}
-        </ul>
+                      {winner ? "Victory" : "Defeat"}
+                    </td>
+                    <td
+                      className={`${
+                        winner ? "text-green-600" : "text-red-600"
+                      } font-semibold px-3`}
+                    >
+                      {winner
+                        ? "+" + game.eloChange.player1EloChange + " Elo"
+                        : game.eloChange.player2EloChange + " Elo"}
+                    </td>
+                    <td className="hiddentable px-3">
+                      <span className="paddingtr">
+                        {game.player1.id === appContext.currentUser.id
+                          ? parseInt(game.player1.elo) +
+                            parseInt(game.eloChange.player1EloChange)
+                          : parseInt(game.player2.elo) +
+                            parseInt(game.eloChange.player2EloChange)}
+                      </span>
+                    </td>
+                  </tr>
+                );
+              })}
+          </tbody>
+        </table>
       </section>
     </>
   );

@@ -2,10 +2,26 @@ const mongoose = require("mongoose");
 
 const gameSchema = new mongoose.Schema({
   player1: {
-    type: mongoose.Types.ObjectId,
+    id: {
+      type: mongoose.Types.ObjectId,
+    },
+    username: {
+      type: String,
+    },
+    elo: {
+      type: Number,
+    },
   },
   player2: {
-    type: mongoose.Types.ObjectId,
+    id: {
+      type: mongoose.Types.ObjectId,
+    },
+    username: {
+      type: String,
+    },
+    elo: {
+      type: Number,
+    },
   },
   winner: {
     type: mongoose.Types.ObjectId,
@@ -15,10 +31,10 @@ const gameSchema = new mongoose.Schema({
   },
   eloChange: {
     player1EloChange: {
-        type: Number,
+      type: Number,
     },
     player2EloChange: {
-        type: Number,
+      type: Number,
     },
   },
 });

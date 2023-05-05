@@ -37,6 +37,18 @@ async function updateStatistics(firstPlayer, secondPlayer, result, k = 32) {
     player2EloChange: Math.round(newPlayer2Elo - player2.elo),
   };
 
+  const newPlayer1 = {
+    id: player1._id,
+    username: player1.username,
+    elo: Math.round(player1.elo),
+  };
+
+  const newPlayer2 = {
+    id: player2._id,
+    username: player2.username,
+    elo: Math.round(player2.elo),
+  };
+
   // Update leaderboard data for both players
   updateLeaderboardData({
     player: player1._id,
@@ -57,8 +69,8 @@ async function updateStatistics(firstPlayer, secondPlayer, result, k = 32) {
 
   // Update game data
   updateGameData({
-    player1: player1._id,
-    player2: player2._id,
+    player1: newPlayer1,
+    player2: newPlayer2,
     winner: player1Won ? player1._id : null,
     dateStarted: new Date(),
     eloChange: newElo,

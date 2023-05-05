@@ -1,5 +1,9 @@
 const Game = require("../../models/Game");
-const { gameInputType, eloChangeInputType } = require("./inputTypes");
+const {
+  gameInputType,
+  eloChangeInputType,
+  playerInputType,
+} = require("./inputTypes");
 const {
   GraphQLNonNull,
   GraphQLString,
@@ -14,10 +18,10 @@ const updateGame = {
   description: "Update a single game",
   args: {
     player1: {
-      type: new GraphQLNonNull(GraphQLID),
+      type: new GraphQLNonNull(playerInputType),
     },
     player2: {
-      type: new GraphQLNonNull(GraphQLID),
+      type: new GraphQLNonNull(playerInputType),
     },
     winner: {
       type: GraphQLID,

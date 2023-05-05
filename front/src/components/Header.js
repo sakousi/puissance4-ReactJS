@@ -38,7 +38,7 @@ export default function Header() {
             className="h-12 w-12 sm:h-16 sm:w-16 mx-4 rounded-full"
             alt="dauphin Logo"
           />
-          <span className="self-center hidden sm:content text-3xl font-semibold whitespace-nowrap text-white">
+          <span className="self-center hidden sm:contents text-3xl font-semibold whitespace-nowrap text-white">
             MellahGames
           </span>
         </Link>

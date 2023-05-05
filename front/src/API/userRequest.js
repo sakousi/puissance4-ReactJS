@@ -129,11 +129,19 @@ export const GET_ALL_LEADERBOARDS = gql`
 `;
 
 export const GET_ALL_GAMES = gql`
-  query GetGamesByUserId {
-    getGamesByUserId {
+  query GetGamesByUserId($id: ID!) {
+    getGamesByUserId(id: $id) {
       id
-      player1
-      player2
+      player1 {
+        id
+        username
+        elo
+      }
+      player2 {
+        id
+        username
+        elo
+      }
       winner
       dateStarted
       eloChange {
