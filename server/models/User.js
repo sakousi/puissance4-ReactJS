@@ -20,6 +20,10 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+    match: [
+      /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,}$/,
+      "Please enter a valid password",
+    ],
   },
   lastConnexion: {
     type: Date,

@@ -13,12 +13,12 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
 
-  const [login] = useMutation(LOGIN, {
+  const [login, { data, loading, error }] = useMutation(LOGIN, {
     onCompleted(data) {
       appContext.setLoggedIn(true);
       appContext.setCurrentUser(data.login.user);
       if (rememberMe) {
-        localStorage.setItem("token", data.login.token);      
+        localStorage.setItem("token", data.login.token);
       }
       navigate("/");
     },
@@ -40,6 +40,9 @@ export default function Login() {
             });
           }}
         >
+          <error className="text-red-600 text-lg">
+            {error && <p>{error.message}</p>}
+          </error>
           <div className="mb-6">
             <label className="block mb-2 text-lg font-medium text-gray-900 text-white">
               Email address

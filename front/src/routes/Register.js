@@ -10,10 +10,10 @@ export default function Register() {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [updateUser] = useMutation(REGISTER, {
+  const [updateUser, { data, loading, error }] = useMutation(REGISTER, {
     onCompleted() {
       navigate("/login");
-    }
+    },
   });
 
   return (
@@ -34,6 +34,9 @@ export default function Register() {
             });
           }}
         >
+          <error className="text-red-600 text-lg">
+            {error && <p>{error.message}</p>}
+          </error>
           <div className="mb-6">
             <label className="block mb-2 text-lg font-medium text-gray-900 text-white">
               UserName
