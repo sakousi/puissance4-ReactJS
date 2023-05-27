@@ -7,7 +7,7 @@ const { getAllLeaderboards, getLeaderboardByUserId, getLeaderboardById} = requir
 const { getGamesByUserId } = require("./Game/queries");
 // Import the mutations
 const { updateUser } = require("./User/mutations");
-const { register, login } = require("./User/authMutations");
+const { register, login, changePassword } = require("./User/authMutations");
 const { createLeaderboard, updateLeaderboard } = require("./Leaderboard/mutations");
 const { updateGame } = require("./Game/mutations");
 
@@ -34,6 +34,7 @@ const MutationType = new GraphQLObjectType({
     updateUser,
     register,
     login,
+    changePassword,
     createLeaderboard,
     updateLeaderboard,
     updateGame,

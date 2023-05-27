@@ -15,6 +15,7 @@ import Login from "../routes/Login";
 import Register from "../routes/Register";
 import Connect4GameProvider from "./Connect4GameContext";
 import Statistics from "../routes/Statistics";
+import Settings from "../routes/Settings";
 export const AppContext = createContext(null);
 
 export function AppProvider() {
@@ -47,6 +48,10 @@ export function AppProvider() {
     {
       path: "/statistics",
       element: loggedIn ? <Statistics /> : <Navigate to="/" />,
+    },
+    {
+      path: "/settings",
+      element: loggedIn ? <Settings /> : <Navigate to="/" />,
     },
     {
       path: "/",

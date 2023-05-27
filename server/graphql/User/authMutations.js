@@ -47,36 +47,37 @@ const login = {
     },
   },
   async resolve(parent, args) {
-
-    const user = (await User.aggregate([
-      {
-        $match: {
-          email: args.email,
+    const user = (
+      await User.aggregate([
+        {
+          $match: {
+            email: args.email,
+          },
         },
-      },
-      {
-        $lookup: {
-          from: "leaderboards",
-          localField: "_id",
-          foreignField: "player",
-          as: "leaderboard",
+        {
+          $lookup: {
+            from: "leaderboards",
+            localField: "_id",
+            foreignField: "player",
+            as: "leaderboard",
+          },
         },
-      },
-      {
-        $addFields: {
-          elo: {
-            $cond: {
-              if: { $gt: [{ $size: "$leaderboard" }, 0] },
-              then: { $arrayElemAt: ["$leaderboard.elo", 0] },
-              else: "$$REMOVE",
+        {
+          $addFields: {
+            elo: {
+              $cond: {
+                if: { $gt: [{ $size: "$leaderboard" }, 0] },
+                then: { $arrayElemAt: ["$leaderboard.elo", 0] },
+                else: "$$REMOVE",
+              },
             },
           },
         },
-      },
-      {
-        $unset: "leaderboard",
-      },
-    ])).shift();
+        {
+          $unset: "leaderboard",
+        },
+      ])
+    ).shift();
 
     if (!user) {
       throw new Error("User not found");
@@ -101,4 +102,37 @@ const login = {
   },
 };
 
-module.exports = { register, login };
+const changePassword = {
+  type: GraphQLBoolean,
+  description: "Change user password",
+  args: {
+    email: { type: new GraphQLNonNull(GraphQLString) },
+    currentPassword: { type: new GraphQLNonNull(GraphQLString) },
+    newPassword: { type: new GraphQLNonNull(GraphQLString) },
+  },
+  async resolve(parent, args, context) {
+    const user = await User.findOne({ email: args.email });
+    const isMatch = await bcrypt.compare(args.currentPassword, user.password);
+    if (!isMatch) {
+      throw new Error("Password is incorrect");
+    }
+
+    if (user) {
+      const newEncodedPassword = await bcrypt.hash(args.newPassword, 12);
+
+      try {
+        await User.updateOne(
+          { _id: user._id },
+          { $set: { password: newEncodedPassword } }
+        );
+        return true;
+      } catch (error) {
+        throw new Error("error updating password");
+      }
+    } else {
+      throw new Error("Acount not found");
+    }
+  },
+};
+
+module.exports = { register, login, changePassword };

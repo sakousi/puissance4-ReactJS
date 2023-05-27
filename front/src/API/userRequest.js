@@ -51,6 +51,12 @@ export const LOGIN = gql`
   }
 `;
 
+export const CHANGE_PASSWORD = gql`
+  mutation ChangePassword($email: String!, $currentPassword: String!, $newPassword: String!) {
+    changePassword(email: $email, currentPassword: $currentPassword, newPassword: $newPassword)
+  }
+`;
+
 export const GET_USER_BY_EMAIL = gql`
   query GetUserByEmail($email: String!) {
     getUserByEmail(email: $email) {

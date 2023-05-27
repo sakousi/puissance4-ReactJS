@@ -87,7 +87,7 @@ export default function Header() {
                           </Link>
                         </li>
                         <li>
-                          <Link className="block px-4 py-2 hover:bg-gray-600 hover:text-white">
+                          <Link to={'/settings'} className="block px-4 py-2 hover:bg-gray-600 hover:text-white">
                             Settings
                           </Link>
                         </li>
