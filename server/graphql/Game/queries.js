@@ -23,7 +23,6 @@ const getGamesByUserId = {
     const games = await Game.find({
       $or: [{ "player1.id": userId }, { "player2.id": userId }],
     }).sort({ dateStarted: -1 });
-
     return games;
   },
 };

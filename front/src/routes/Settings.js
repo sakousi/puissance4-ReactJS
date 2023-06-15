@@ -23,7 +23,7 @@ export default function Settings() {
   return (
     <>
       <Header></Header>
-      <section className="flex justify-center items-center flex-col h-screen bg-gray-900">
+      <section className="flex items-center flex-col h-screen bg-gray-900 pt-10">
         <h1 className="text-white text-4xl m-8">Settings</h1>
         <form
           onSubmit={(e) => {

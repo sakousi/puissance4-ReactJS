@@ -19,7 +19,7 @@ export default function Register() {
   return (
     <>
       <Header></Header>
-      <section className="flex justify-center items-center flex-col min-h-screen bg-gray-900">
+      <section className="flex items-center flex-col min-h-screen bg-gray-900 pt-10">
         <h1 className="text-white text-4xl m-8">Register</h1>
         <form
           onSubmit={(e) => {
@@ -34,9 +34,9 @@ export default function Register() {
             });
           }}
         >
-          <error className="text-red-600 text-lg">
-            {error && <p>{error.message}</p>}
-          </error>
+          <p className="text-red-600 text-lg">
+            {error && <span>{error.message}</span>}
+          </p>
           <div className="mb-6">
             <label className="block mb-2 text-lg font-medium text-gray-900 text-white">
               UserName

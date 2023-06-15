@@ -13,12 +13,14 @@ export default function Statistics() {
   const [getAllGames] = useLazyQuery(GET_ALL_GAMES, {
     fetchPolicy: "no-cache",
     onCompleted(data) {
+      console.log(data);
       setGames(data.getGamesByUserId);
     },
   });
 
   useEffect(() => {
     if (appContext.currentUser) {
+      console.log(appContext.currentUser.id);
       getAllGames({ variables: { id: appContext.currentUser.id } });
     }
   }, [appContext.currentUser, getAllGames]);

@@ -14,19 +14,27 @@ const permissions = shield(
     MutationType: {
       register: allow,
       login: allow,
+      changePassword: allow,
       updateUser: allow,
+      createLeaderboard: allow,
+      updateLeaderboard: allow,
+      updateGame: allow,
     },
     QueryType: {
       getUserById: allow,
+      getUserByEmail: allow,
+      getAllUsers: allow,
+      getLeaderboardById: allow,
+      getLeaderboardByUserId: allow,
+      getAllLeaderboards: allow,
+      getGamesByUserId: allow,
     },
   },
   {
     fallbackError: async (thrownThing, parent, args, context, info) => {
       if (thrownThing instanceof Error) {
-        // expected errors
         return thrownThing;
       } else {
-        // what the hell got thrown
         console.error("The resolver threw something that is not an error.");
         console.error(thrownThing);
         return new Error("Internal server error", "ERR_INTERNAL_SERVER");

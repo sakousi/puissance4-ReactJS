@@ -19,7 +19,8 @@ const { config } = require("dotenv");
 const validateEnv = require("./utils/validateEnv");
 const { createSockets } = require("./sockets/index");
 
-const envFile = process.env.NODE_ENV === "production" ? ".env.production" : ".env";
+const envFile =
+  process.env.NODE_ENV === "production" ? ".env.production" : ".env";
 dotenv.config({ path: envFile });
 
 app.use(cors());

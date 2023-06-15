@@ -34,8 +34,8 @@ export default function Header() {
       <div className="container flex flex-wrap items-center justify-between mx-auto">
         <Link to={"/"} className="flex items-center ">
           <img
-            src={`${process.env.PUBLIC_URL}/images/dauphin.jpg`}
-            className="h-12 w-12 sm:h-16 sm:w-16 mx-4 rounded-full"
+            src={`${process.env.PUBLIC_URL}/images/Puissance_4.svg`}
+            className="h-12 w-12 sm:h-14 sm:w-14 mx-4 rounded-lg"
             alt="dauphin Logo"
           />
           <span className="self-center hidden sm:contents text-3xl font-semibold whitespace-nowrap text-white">
