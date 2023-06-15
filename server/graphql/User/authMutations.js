@@ -12,6 +12,8 @@ const getToken = require("../../middleware/authUser");
 const bcrypt = require("bcryptjs");
 const { createJwtToken } = require("../../utils/auth");
 
+const passwordRegex = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,}$/;
+
 const register = {
   type: GraphQLBoolean,
   description: "Register a new user",
@@ -22,10 +24,14 @@ const register = {
   },
   async resolve(parent, args) {
     const param = args?.input;
-    param.password = await bcrypt.hash(param.password, 12);
-    const user = new User(param);
-    const result = await user.save();
-    return result.ok;
+    if (passwordRegex.test(param.password)) {
+      param.password = await bcrypt.hash(param.password, 12);
+      const user = new User(param);
+      const result = await user.save();
+      return result.ok;
+    } else {
+      throw new Error("password not strong enough");
+    }
   },
 };
 
@@ -118,16 +124,19 @@ const changePassword = {
     }
 
     if (user) {
-      const newEncodedPassword = await bcrypt.hash(args.newPassword, 12);
-
-      try {
-        await User.updateOne(
-          { _id: user._id },
-          { $set: { password: newEncodedPassword } }
-        );
-        return true;
-      } catch (error) {
-        throw new Error("error updating password");
+      if (passwordRegex.test(args.newPassword)) {
+        const newEncodedPassword = await bcrypt.hash(args.newPassword, 12);
+        try {
+          await User.updateOne(
+            { _id: user._id },
+            { $set: { password: newEncodedPassword } }
+          );
+          return true;
+        } catch (error) {
+          throw new Error("error updating password");
+        }
+      } else {
+        throw new Error("new password not strong enough");
       }
     } else {
       throw new Error("Acount not found");
