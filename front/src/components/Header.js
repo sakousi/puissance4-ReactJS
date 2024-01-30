@@ -13,7 +13,7 @@ export default function Header() {
     localStorage.removeItem("token");
     window.location.reload();
     client.resetStore();
-    console.log("on espere que ca marche cette fois ci c'dst bon");
+    console.log("on espere que ca marche cette fois ci c'dst bon 100%");
   };
 
   const handleClickOutside = (event) => {
